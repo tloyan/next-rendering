@@ -53,9 +53,9 @@ export default function AppLayout({children}: PropsWithChildren) {
               </Link>
               <Link
                 className="text-sm font-semibold underline sm:hidden"
-                href="/exercises/post"
+                href="/exercises/static-rendering"
               >
-                Posts
+                Static Rendering
               </Link>
               <Link
                 className="text-sm font-semibold underline sm:hidden"
