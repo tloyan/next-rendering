@@ -13,7 +13,7 @@ type BddDataType = {
 }
 
 const defaultData: BddDataType = {
-  posts: [{title: 'Default post'}],
+  posts: [{id: '1', title: 'Default post'}],
   products: [
     {
       id: '1',
@@ -59,7 +59,9 @@ export default async function lowDb() {
 async function initDb() {
   const db = await JSONFilePreset('./src/db/db.json', defaultData)
   if (db.data.posts?.length === 1) {
-    db.update(({posts}: BddDataType) => posts?.push({title: 'Un post'}))
+    db.update(({posts}: BddDataType) =>
+      posts?.push({id: '2', title: 'Un post'})
+    )
   }
 
   return db
@@ -215,6 +217,24 @@ export async function getPosts() {
   //   posts as object
   // )
   return posts
+}
+
+export async function addPost(post: Post) {
+  console.log('addPost', post)
+  //await simulateUnstableServer({slow: true})
+  const db = await lowDb()
+  await db.update(({posts}) => {
+    posts?.push({
+      id: `${posts.length + 1}`,
+      title: post.title,
+    })
+  })
+}
+export async function getPostById(id: string) {
+  console.log('getPostById', id)
+  const db = await lowDb()
+  const {posts} = db.data
+  return posts?.find((post) => post.id === id)
 }
 
 async function simulateUnstableServer({
