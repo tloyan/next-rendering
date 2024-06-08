@@ -3,6 +3,7 @@ import Link from 'next/link'
 import {PropsWithChildren} from 'react'
 
 import {ModeToggle} from '@/components/theme-toggle'
+import {cn} from '@/lib/utils'
 
 export const metadata: Metadata = {
   title: 'App',
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 
 export default function AppLayout({children}: PropsWithChildren) {
   const generateDate = new Date().toISOString()
+  const environment = process.env.NODE_ENV
   return (
     <div className="flex h-screen flex-col">
       <header className="border-b">
@@ -75,7 +77,15 @@ export default function AppLayout({children}: PropsWithChildren) {
           <div className="mx-auto max-w-4xl">
             © {new Date().getFullYear()} Super SaaS . All rights reserved.{' '}
             <p className="animate-color-cycle text-sm">
-              Rendu le {generateDate}
+              Rendu le {generateDate}{' '}
+              <span
+                className={cn({
+                  'text-red-600': environment === 'development',
+                  'text-green-600': environment === 'production',
+                })}
+              >
+                Env: {environment}
+              </span>
             </p>
           </div>
         </div>

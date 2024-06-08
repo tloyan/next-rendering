@@ -1,3 +1,4 @@
+import RenderTime from '@/components/render-time'
 import {Post} from '@/lib/type'
 
 //https://rc.nextjs.org/docs/app/building-your-application/rendering/server-components#dynamic-functions
@@ -12,6 +13,7 @@ const Page = async () => {
       <ul className="list-disc p-4 pl-4">
         {posts?.map((post: Post) => <li key={post.title}>{post.title}</li>)}
       </ul>
+      <RenderTime />
     </div>
   )
 }

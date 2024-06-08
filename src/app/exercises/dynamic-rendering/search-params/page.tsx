@@ -1,3 +1,4 @@
+import RenderTime from '@/components/render-time'
 import {getPosts} from '@/db/sgbd'
 import {Post} from '@/lib/type'
 
@@ -19,6 +20,7 @@ const Page = async ({
       <ul className="list-disc p-4 pl-4">
         {posts?.map((post: Post) => <li key={post.id}>{post.title}</li>)}
       </ul>
+      <RenderTime />
     </div>
   )
 }

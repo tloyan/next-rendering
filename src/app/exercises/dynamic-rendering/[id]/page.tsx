@@ -1,11 +1,13 @@
 //https://rc.nextjs.org/docs/app/building-your-application/rendering/server-components#dynamic-functions
 
+import RenderTime from '@/components/render-time'
 import {getPostById, getPosts} from '@/db/sgbd'
 import {Post} from '@/lib/type'
 import {notFound} from 'next/navigation'
+import {cache} from 'react'
 
 //export const dynamic = 'force-dynamic'
-export const revalidate = 20
+//export const revalidate = 20
 export async function generateStaticParams() {
   // const data = await fetch('https://jsonplaceholder.typicode.com/posts')
   // const posts: Post[] = await data.json()
@@ -26,7 +28,10 @@ const Page = async ({params}: {params: {id: string}}) => {
   // )
   // const post = await data.json()
 
-  const post = await getPostById(params.id)
+  const post = cache(async () => {
+    const postData = await getPostById(params.id)
+    return postData
+  }) as unknown as Post
   if (!post) notFound()
   return (
     <div className="mx-auto max-w-4xl p-6 text-lg">
@@ -36,6 +41,7 @@ const Page = async ({params}: {params: {id: string}}) => {
           {post?.title} (id : {post?.id})
         </li>
       </ul>
+      <RenderTime />
     </div>
   )
 }
