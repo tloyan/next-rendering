@@ -1,31 +1,31 @@
 import {cn} from '@/lib/utils'
 
 const EnvComponent = ({
-  name = 'no name',
+  name,
   disabled = false,
 }: {
   name?: string
   disabled?: boolean
 }) => {
+  console.log('EnvComponent', name)
   const isClient = typeof window !== 'undefined'
   const environment = process.env.NODE_ENV
   if (disabled) {
     return <></>
   }
   return (
-    <div>
-      {isClient
-        ? `📄 I am a client component (${name})`
-        : `🖥️ I am a server component (${name})`}
+    <span className="text-sm">
+      {isClient ? `Client component ` : `Server component `}
+      {name ? `(${name}) ` : ``}
       <span
         className={cn({
-          'text-red-600': environment === 'development',
+          'text-red-300': environment === 'development',
           'text-green-600': environment === 'production',
         })}
       >
-        Env: {environment}
+        (Env: {environment})&nbsp;
       </span>
-    </div>
+    </span>
   )
 }
 

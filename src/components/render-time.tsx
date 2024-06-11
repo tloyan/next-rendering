@@ -1,12 +1,19 @@
 import EnvComponent from './env-component'
 
-export default function RenderTime() {
+export default function RenderTime({
+  name,
+  disabled = false,
+}: {
+  name?: string
+  disabled?: boolean
+}) {
   return (
-    <div className="border-grey-100 border-2">
-      <p className="animate-color-cycle text-sm">
-        Rendu le {new Date().toISOString()}
+    <div className="flex flex-auto items-center justify-center ">
+      <p className="text-sm">
+        <EnvComponent name={name} disabled={disabled} />
+        Rendu le&nbsp;
+        <span className="animate-color-cycle">{new Date().toISOString()}</span>
       </p>
-      <EnvComponent name={RenderTime.name} disabled={true} />
     </div>
   )
 }

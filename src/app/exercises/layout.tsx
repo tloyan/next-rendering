@@ -3,7 +3,8 @@ import Link from 'next/link'
 import {PropsWithChildren} from 'react'
 
 import {ModeToggle} from '@/components/theme-toggle'
-import {cn} from '@/lib/utils'
+
+import RenderTime from '@/components/render-time'
 
 export const metadata: Metadata = {
   title: 'App',
@@ -11,8 +12,6 @@ export const metadata: Metadata = {
 }
 
 export default function AppLayout({children}: PropsWithChildren) {
-  const generateDate = new Date().toISOString()
-  const environment = process.env.NODE_ENV
   return (
     <div className="flex h-screen flex-col">
       <header className="border-b">
@@ -38,6 +37,12 @@ export default function AppLayout({children}: PropsWithChildren) {
                 >
                   dynamic-rendering
                 </Link>
+                <Link
+                  className="font-medium transition-colors hover:underline"
+                  href="/exercises/streaming"
+                >
+                  Streaming
+                </Link>
               </div>
             </div>
             <div className="flex items-center space-x-2">
@@ -60,6 +65,12 @@ export default function AppLayout({children}: PropsWithChildren) {
                 Dynamic Rendering
               </Link>
               <Link
+                className="text-sm font-semibold underline sm:hidden"
+                href="/exercises/streaming"
+              >
+                Streaming
+              </Link>
+              <Link
                 className="flex items-center space-x-2 font-medium"
                 href="/exercises"
               >
@@ -76,17 +87,7 @@ export default function AppLayout({children}: PropsWithChildren) {
         <div className="container flex h-14 items-center justify-center px-4 text-center sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl">
             © {new Date().getFullYear()} Super SaaS . All rights reserved.{' '}
-            <p className="animate-color-cycle text-sm">
-              Rendu le {generateDate}{' '}
-              <span
-                className={cn({
-                  'text-red-600': environment === 'development',
-                  'text-green-600': environment === 'production',
-                })}
-              >
-                Env: {environment}
-              </span>
-            </p>
+            <RenderTime name="exercices main layout" />
           </div>
         </div>
       </footer>

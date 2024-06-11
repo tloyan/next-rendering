@@ -1,9 +1,8 @@
-import EnvComponent from '@/components/env-component'
 import RenderTime from '@/components/render-time'
 import {getPosts} from '@/db/sgbd'
 import {Post} from '@/lib/type'
 
-export const revalidate = 10
+//export const revalidate = 10
 const Page = async () => {
   const posts = await getPosts()
 
@@ -13,7 +12,7 @@ const Page = async () => {
       <ul className="list-disc p-4 pl-4">
         {posts?.map((post: Post) => <li key={post.title}>{post.title}</li>)}
       </ul>
-      <EnvComponent />
+
       <RenderTime />
     </div>
   )
