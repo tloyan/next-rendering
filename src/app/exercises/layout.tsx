@@ -43,6 +43,12 @@ export default function AppLayout({children}: PropsWithChildren) {
                 >
                   Streaming
                 </Link>
+                <Link
+                  className="font-medium transition-colors hover:underline"
+                  href="/exercises/composition"
+                >
+                  Composition
+                </Link>
               </div>
             </div>
             <div className="flex items-center space-x-2">
