@@ -4,17 +4,17 @@ import {cn} from '@/lib/utils'
 import {ComponentTypeEnum} from './util'
 
 type Props = PropsWithChildren<{
-  componentType?: string
-  actualType?: string
+  componentType?: ComponentTypeEnum
+  actualType?: ComponentTypeEnum
 }>
 export function CardComponentType({
   children,
   componentType = ComponentTypeEnum.SERVER,
   actualType = ComponentTypeEnum.CLIENT,
 }: Props) {
-  console.log('actualType CardComponentType', actualType)
   return (
     <Card
+      suppressHydrationWarning
       className={cn(
         'w-[350px]',
         actualType === ComponentTypeEnum.SERVER ? 'bg-blue-500' : 'bg-red-500'

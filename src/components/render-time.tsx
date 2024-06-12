@@ -12,7 +12,9 @@ export default function RenderTime({
       <p className="text-sm">
         <EnvComponent name={name} disabled={disabled} />
         Rendu le&nbsp;
-        <span className="animate-color-cycle">{new Date().toISOString()}</span>
+        <span className="animate-color-cycle" suppressHydrationWarning>
+          {new Date().toISOString()}
+        </span>
       </p>
     </div>
   )

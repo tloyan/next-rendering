@@ -49,6 +49,12 @@ export default function AppLayout({children}: PropsWithChildren) {
                 >
                   Composition
                 </Link>
+                <Link
+                  className="font-medium transition-colors hover:underline"
+                  href="/exercises/composition-2"
+                >
+                  Composition 2
+                </Link>
               </div>
             </div>
             <div className="flex items-center space-x-2">

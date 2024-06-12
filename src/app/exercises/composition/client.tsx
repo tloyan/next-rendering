@@ -1,11 +1,11 @@
 'use client'
 import React from 'react'
 import {CardComponentType} from './card'
-import {ComponentTypeEnum} from './util'
+import {ComponentTypeEnum, detectActualType} from './util'
 
 export default function Client({children}: {children?: React.ReactNode}) {
   const actualType = detectActualType()
-  console.log('actualType Client', actualType)
+
   return (
     <CardComponentType
       componentType={ComponentTypeEnum.CLIENT}
@@ -15,8 +15,8 @@ export default function Client({children}: {children?: React.ReactNode}) {
     </CardComponentType>
   )
 }
-function detectActualType() {
-  return typeof window === 'undefined'
-    ? ComponentTypeEnum.SERVER
-    : ComponentTypeEnum.CLIENT
-}
+// function detectActualType() {
+//   return typeof window === 'undefined'
+//     ? ComponentTypeEnum.SERVER
+//     : ComponentTypeEnum.CLIENT
+// }
