@@ -84,7 +84,7 @@ export default function AppLayout({children}: PropsWithChildren) {
               </Link>
               <Link
                 className="flex items-center space-x-2 font-medium"
-                href="/exercises"
+                href="/exercises/auth"
               >
                 <span>Profile</span>
               </Link>

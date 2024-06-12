@@ -7,34 +7,6 @@
     {
       "id": "2",
       "title": "Un post"
-    },
-    {
-      "id": "3",
-      "title": "Un post"
-    },
-    {
-      "id": "4",
-      "title": "Un post"
-    },
-    {
-      "id": "5",
-      "title": "Un post"
-    },
-    {
-      "id": "6",
-      "title": "Un post"
-    },
-    {
-      "id": "7",
-      "title": "Un post"
-    },
-    {
-      "id": "9",
-      "title": "Un post"
-    },
-    {
-      "id": "10",
-      "title": "Un post"
     }
   ],
   "products": [
@@ -45,7 +17,7 @@
       "quantity": 19,
       "category": "lighting",
       "createdAt": "2024-04-24T05:56:06.593Z",
-      "updadtedAt": "2024-06-07T07:52:43.588Z"
+      "updadtedAt": "2024-06-12T09:42:59.802Z"
     },
     {
       "id": "2",
@@ -54,79 +26,7 @@
       "quantity": 4,
       "category": "furniture",
       "createdAt": "2024-04-25T05:56:06.593Z",
-      "updadtedAt": "2024-06-07T07:52:43.588Z"
-    },
-    {
-      "id": "2",
-      "title": "IPhone",
-      "price": 1490,
-      "quantity": 4,
-      "category": "furniture",
-      "createdAt": "2024-04-25T05:56:06.593Z",
-      "updadtedAt": "2024-06-07T07:52:43.588Z"
-    },
-    {
-      "id": "2",
-      "title": "IPhone",
-      "price": 1490,
-      "quantity": 4,
-      "category": "furniture",
-      "createdAt": "2024-04-25T05:56:06.593Z",
-      "updadtedAt": "2024-06-07T07:52:43.588Z"
-    },
-    {
-      "id": "2",
-      "title": "IPhone",
-      "price": 1490,
-      "quantity": 4,
-      "category": "furniture",
-      "createdAt": "2024-04-25T05:56:06.593Z",
-      "updadtedAt": "2024-06-07T07:52:43.588Z"
-    },
-    {
-      "id": "2",
-      "title": "IPhone",
-      "price": 1490,
-      "quantity": 4,
-      "category": "furniture",
-      "createdAt": "2024-04-25T05:56:06.593Z",
-      "updadtedAt": "2024-06-07T07:52:43.588Z"
-    },
-    {
-      "id": "2",
-      "title": "IPhone",
-      "price": 1490,
-      "quantity": 4,
-      "category": "furniture",
-      "createdAt": "2024-04-25T05:56:06.593Z",
-      "updadtedAt": "2024-06-07T07:52:43.588Z"
-    },
-    {
-      "id": "2",
-      "title": "IPhone",
-      "price": 1490,
-      "quantity": 4,
-      "category": "furniture",
-      "createdAt": "2024-04-25T05:56:06.593Z",
-      "updadtedAt": "2024-06-07T07:52:43.588Z"
-    },
-    {
-      "id": "2",
-      "title": "IPhone",
-      "price": 1490,
-      "quantity": 4,
-      "category": "furniture",
-      "createdAt": "2024-04-25T05:56:06.593Z",
-      "updadtedAt": "2024-06-07T07:52:43.588Z"
-    },
-    {
-      "id": "2",
-      "title": "dfgdfg",
-      "price": 1490,
-      "quantity": 4,
-      "category": "furniture",
-      "createdAt": "2024-04-25T05:56:06.593Z",
-      "updadtedAt": "2024-06-07T07:52:43.588Z"
+      "updadtedAt": "2024-06-12T09:42:59.802Z"
     }
   ],
   "todos": [
@@ -134,15 +34,53 @@
       "id": 1,
       "title": "Apprendre React",
       "isCompleted": true,
-      "createdAt": "2024-06-07T07:52:43.588Z",
-      "updadtedAt": "2024-06-07T07:52:43.588Z"
+      "createdAt": "2024-06-12T09:42:59.802Z",
+      "updadtedAt": "2024-06-12T09:42:59.802Z"
     },
     {
       "id": 2,
       "title": "Apprendre Next",
       "isCompleted": false,
-      "createdAt": "2024-06-07T07:52:43.588Z",
-      "updadtedAt": "2024-06-07T07:52:43.588Z"
+      "createdAt": "2024-06-12T09:42:59.802Z",
+      "updadtedAt": "2024-06-12T09:42:59.802Z"
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "email": "a@a.fr",
+      "password": "1234",
+      "name": "John",
+      "role": "USER"
+    },
+    {
+      "id": "2",
+      "email": "admin@mikecodeur.com",
+      "password": "$2b$10$YPyqTOmKCcHYbeKFmLLKiep45ktTCBTw6ZqmXXdF0/eP.AREedj/W",
+      "name": "John Doe",
+      "role": "USER"
+    }
+  ],
+  "sessions": [
+    {
+      "sessionId": "1",
+      "userId": "1",
+      "createdAt": "2024-06-12T09:42:59.802Z"
+    },
+    {
+      "sessionId": "483662df-2563-413f-b6da-d7eefa3cd1e9",
+      "userId": "2",
+      "createdAt": "2024-06-12T09:43:17.145Z"
+    },
+    {
+      "sessionId": "cc251c46-b1b3-4b4e-b5f3-7d82d17274d8",
+      "userId": "2",
+      "createdAt": "2024-06-12T09:45:34.912Z"
+    },
+    {
+      "sessionId": "ac4a862b-59bf-43e2-964a-4e2cadac03b0",
+      "userId": "2",
+      "createdAt": "2024-06-12T09:46:49.980Z"
     }
   ]
 }

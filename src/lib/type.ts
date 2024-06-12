@@ -21,11 +21,27 @@ export type Todo = {
   createdAt?: string
   updadtedAt?: string
 }
-
+export enum RoleEnum {
+  USER = 'USER',
+  ADMIN = 'ADMIN',
+}
+export type User = {
+  id: string
+  email: string
+  password: string
+  name?: string
+  role: RoleEnum
+}
+export type AddUser = Partial<Pick<User, 'id'>> & Omit<User, 'id'>
 export type AddTodo = Partial<Pick<Todo, 'id'>> & Omit<Todo, 'id'>
 export enum CategoriesEnum {
   default = 'default',
   lighting = 'lighting',
   furniture = 'furniture',
   bags = 'bags',
+}
+export type Session = {
+  sessionId: string
+  userId: string
+  createdAt: string
 }
