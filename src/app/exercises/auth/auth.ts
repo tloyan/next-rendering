@@ -76,11 +76,31 @@ export const signUpCredentials = async (email: string, password: string) => {
   return {email: newUser.email, role: newUser.role}
 }
 
+export async function logout() {
+  await new Promise((resolve) => setTimeout(resolve, 1000))
+  // Supprimer le cookie `currentUser`
+  cookies().set('currentUser', '', {
+    path: '/',
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: -1, // Expire immédiatement le cookie
+  })
+
+  cookies().set('sessionId', '', {
+    path: '/',
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: -1, // Expire immédiatement le cookie
+  })
+
+  return {message: 'Logout successful'}
+}
+
 export async function createSession(user: User) {
   const sessionId = randomUUID() //generateSessionId() // Generate a unique session ID
   cookies().set({
     name: 'sessionId',
-    value: JSON.stringify(user),
+    value: sessionId,
     path: '/',
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
@@ -96,7 +116,8 @@ export async function createSession(user: User) {
 }
 export async function getSession() {
   const sessionId = cookies().get('sessionId')?.value
-  console.log('getSession sessionId', sessionId)
+  //const session = JSON.parse(sessionString as string)
+  //console.log('getSession sessionId', session)
   // eslint-disable-next-line unicorn/no-null
   return sessionId ? await findSession(sessionId) : null
 }

@@ -281,7 +281,7 @@ async function simulateUnstableServer({
 
 export async function addUser(user: AddUser) {
   console.log('addUser', user)
-  await simulateUnstableServer({slow: true})
+  //await simulateUnstableServer({slow: true})
   const db = await lowDb()
   user.id = user.id ?? `${(db.data.users?.length ?? 0) + 1}`
   const newUser: User = {
@@ -308,7 +308,7 @@ export async function updateUser(user: User) {
 
 export async function updateUserRole(email: string, role: RoleEnum) {
   console.log('updateUserRole', role)
-  await simulateUnstableServer({slow: true})
+  //await simulateUnstableServer({slow: true})
   const user = await getUserByEmail(email)
   if (!user) {
     throw new Error('User not found')

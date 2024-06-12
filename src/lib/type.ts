@@ -23,6 +23,7 @@ export type Todo = {
 }
 export enum RoleEnum {
   USER = 'USER',
+  REDACTOR = 'REDACTOR',
   ADMIN = 'ADMIN',
 }
 export type User = {

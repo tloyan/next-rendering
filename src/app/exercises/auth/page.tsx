@@ -13,7 +13,9 @@ export default async function Page() {
       {!userLogged && <LoginForm></LoginForm>}
       {userLogged && (
         <>
-          <Label className="text-xl">User connected {userLogged.email}</Label>
+          <Label className="text-xl">
+            User connected {userLogged.email} ({userLogged.role})
+          </Label>
           <Logout></Logout>
         </>
       )}

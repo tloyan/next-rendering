@@ -1,9 +1,16 @@
 'use server'
 
-import {getUserById, updateUserRole} from '@/db/sgbd'
-import {SignInError, getSession, signIn, signUp} from './auth'
+import {getUserByEmail, getUserById, updateUserRole} from '@/db/sgbd'
+import {
+  SignInError,
+  getSession,
+  logout as authLogout,
+  signIn,
+  signUp,
+} from './auth'
 import {cookies} from 'next/headers'
 import {RoleEnum} from '@/lib/type'
+import {revalidatePath} from 'next/cache'
 
 export async function authenticate(_currentState: unknown, formData: FormData) {
   console.log('Authenticating...')
@@ -64,19 +71,11 @@ export async function register(_currentState: unknown, formData: FormData) {
     }
     throw error
   }
+  revalidatePath('/exercises/auth')
 }
 
 export async function logout() {
-  await new Promise((resolve) => setTimeout(resolve, 1000))
-  // Supprimer le cookie `currentUser`
-  cookies().set('currentUser', '', {
-    path: '/',
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    maxAge: -1, // Expire immédiatement le cookie
-  })
-
-  return {message: 'Logout successful'}
+  return await authLogout()
 }
 
 export async function getUserLogged() {
@@ -85,8 +84,9 @@ export async function getUserLogged() {
   if (userCookie) {
     try {
       const user = JSON.parse(userCookie.value)
-      console.log('User logged:', user)
-      return user
+      const dbUser = await getUserByEmail(user.email) //todo react cache
+      console.log('User logged:', dbUser)
+      return dbUser
     } catch (error) {
       console.error('Failed to parse user cookie', error)
       return
@@ -101,13 +101,17 @@ export async function changeRole(_currentState: unknown, formData: FormData) {
   const user = await getUserById(session?.userId ?? '')
   console.log('changeRole session', session)
   console.log('changeRole user', user)
+  if (!user) {
+    return 'vous etes pas connecté'
+  }
   if (user?.role !== RoleEnum.ADMIN) {
     return 'User is not an ADMIN'
   }
-  //const userRole = session?.user?.role
+  //const userRole = sesxsion?.user?.role
   if (formData.get('role') === RoleEnum.ADMIN) {
     return 'User already has the role ADMIN'
   }
-  updateUserRole(formData.get('email') as string, RoleEnum.ADMIN)
+  updateUserRole(user.email, formData.get('role') as RoleEnum)
+  revalidatePath('/exercises/auth')
   return 'change role successful'
 }
