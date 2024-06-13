@@ -17,7 +17,7 @@
       "quantity": 19,
       "category": "lighting",
       "createdAt": "2024-04-24T05:56:06.593Z",
-      "updadtedAt": "2024-06-12T09:42:59.802Z"
+      "updadtedAt": "2024-06-13T08:15:43.341Z"
     },
     {
       "id": "2",
@@ -26,7 +26,7 @@
       "quantity": 4,
       "category": "furniture",
       "createdAt": "2024-04-25T05:56:06.593Z",
-      "updadtedAt": "2024-06-12T09:42:59.802Z"
+      "updadtedAt": "2024-06-13T08:15:43.341Z"
     }
   ],
   "todos": [
@@ -34,36 +34,29 @@
       "id": 1,
       "title": "Apprendre React",
       "isCompleted": true,
-      "createdAt": "2024-06-12T09:42:59.802Z",
-      "updadtedAt": "2024-06-12T09:42:59.802Z"
+      "createdAt": "2024-06-13T08:15:43.341Z",
+      "updadtedAt": "2024-06-13T08:15:43.341Z"
     },
     {
       "id": 2,
       "title": "Apprendre Next",
       "isCompleted": false,
-      "createdAt": "2024-06-12T09:42:59.802Z",
-      "updadtedAt": "2024-06-12T09:42:59.802Z"
+      "createdAt": "2024-06-13T08:15:43.341Z",
+      "updadtedAt": "2024-06-13T08:15:43.341Z"
     }
   ],
   "users": [
     {
       "id": "1",
       "email": "a@a.fr",
-      "password": "1234",
+      "password": "$2b$10$ctVHPcQ6RdTSIYnxUVbj6uzjbe9P1Cmku.vcon9uLj4I/xYpXGwvO",
       "name": "John",
       "role": "USER"
     },
     {
       "id": "2",
-      "email": "admin@mikecodeur.com",
-      "password": "$2b$10$YPyqTOmKCcHYbeKFmLLKiep45ktTCBTw6ZqmXXdF0/eP.AREedj/W",
-      "name": "John Doe",
-      "role": "ADMIN"
-    },
-    {
-      "id": "3",
       "email": "cabanas.mickael@gmail.Com",
-      "password": "$2b$10$mk9/OqxWfteNZzNmYjbvS.3VNZX66QAK3cUA3jZIUPsNv/uAop0EO",
+      "password": "$2b$10$B1rauESqzroTMx.vCHaeGunVwmQdYTzB8m8i7jEj0p/VhGvrWq.WS",
       "name": "John Doe",
       "role": "USER"
     }
@@ -72,62 +65,7 @@
     {
       "sessionId": "1",
       "userId": "1",
-      "createdAt": "2024-06-12T09:42:59.802Z"
-    },
-    {
-      "sessionId": "483662df-2563-413f-b6da-d7eefa3cd1e9",
-      "userId": "2",
-      "createdAt": "2024-06-12T09:43:17.145Z"
-    },
-    {
-      "sessionId": "cc251c46-b1b3-4b4e-b5f3-7d82d17274d8",
-      "userId": "2",
-      "createdAt": "2024-06-12T09:45:34.912Z"
-    },
-    {
-      "sessionId": "ac4a862b-59bf-43e2-964a-4e2cadac03b0",
-      "userId": "2",
-      "createdAt": "2024-06-12T09:46:49.980Z"
-    },
-    {
-      "sessionId": "490c3bae-53e3-461b-9844-1e1d5b4f680d",
-      "userId": "2",
-      "createdAt": "2024-06-12T13:15:52.175Z"
-    },
-    {
-      "sessionId": "c4677123-0cda-4180-b9c2-7a2dd2767855",
-      "userId": "2",
-      "createdAt": "2024-06-12T13:24:20.080Z"
-    },
-    {
-      "sessionId": "d876864a-45f3-4250-9a50-8b6aa282eec0",
-      "userId": "2",
-      "createdAt": "2024-06-12T13:26:42.540Z"
-    },
-    {
-      "sessionId": "7ffaf078-a210-46ac-be28-c2e7c0967b46",
-      "userId": "2",
-      "createdAt": "2024-06-12T13:26:58.679Z"
-    },
-    {
-      "sessionId": "35a98178-a514-4bf6-8e25-1101f87b6f07",
-      "userId": "2",
-      "createdAt": "2024-06-12T13:27:51.214Z"
-    },
-    {
-      "sessionId": "4f92b55d-1ea6-4eed-8c4d-0bc47ec85368",
-      "userId": "2",
-      "createdAt": "2024-06-12T13:45:26.832Z"
-    },
-    {
-      "sessionId": "c2883b7a-b3bc-4257-84f2-d3aa3e8d3513",
-      "userId": "2",
-      "createdAt": "2024-06-12T14:02:54.130Z"
-    },
-    {
-      "sessionId": "5a0d5591-a9b2-4a07-b5e0-f56cd43ec65c",
-      "userId": "3",
-      "createdAt": "2024-06-12T14:04:03.338Z"
+      "createdAt": "2024-06-13T08:15:43.341Z"
     }
   ]
 }

@@ -66,7 +66,7 @@ const defaultData: BddDataType = {
     {
       id: '1',
       email: 'a@a.fr',
-      password: '1234',
+      password: '$2b$10$ctVHPcQ6RdTSIYnxUVbj6uzjbe9P1Cmku.vcon9uLj4I/xYpXGwvO', //pass = a
       name: 'John',
       role: RoleEnum.USER,
     },
@@ -333,7 +333,7 @@ export async function getUserById(id: string) {
 
 export async function addSession(session: Session) {
   console.log('addSession', session)
-  await simulateUnstableServer({slow: true})
+  //await simulateUnstableServer({slow: true})
   const db = await lowDb()
   await db.update(({sessions}) => {
     sessions?.push({

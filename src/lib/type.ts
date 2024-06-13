@@ -46,3 +46,12 @@ export type Session = {
   userId: string
   createdAt: string
 }
+
+export type AuthSession = {
+  user: User
+  expires: Date
+}
+export enum SessionType {
+  COOKIES = 'COOKIES',
+  DATABASE = 'DATABASE',
+}
