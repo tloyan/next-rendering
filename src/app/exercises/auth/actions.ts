@@ -8,7 +8,7 @@ import {
   signUp,
   getUserFromCookiesSession,
   getSession,
-} from './auth'
+} from './lib/auth'
 
 import {RoleEnum} from '@/lib/type'
 import {revalidatePath} from 'next/cache'
