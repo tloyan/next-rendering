@@ -72,7 +72,7 @@ const defaultData: BddDataType = {
     },
   ],
   sessions: [
-    {sessionId: '1', userId: '1', createdAt: new Date().toISOString()},
+    {sessionId: '1', userId: '1', expiresAt: new Date().toISOString()},
   ],
 }
 
@@ -339,12 +339,29 @@ export async function addSession(session: Session) {
     sessions?.push({
       sessionId: session.sessionId,
       userId: session.userId,
-      createdAt: session.createdAt,
+      expiresAt: session.expiresAt,
     })
   })
 }
 
+export async function updateSession(session: Session) {
+  console.log('updateSession', session)
+  //await simulateUnstableServer({slow: true})
+  //user.updadtedAt = user.updadtedAt ?? new Date().toISOString()
+  const db = await lowDb()
+  await db.update(({sessions}) => {
+    const index =
+      sessions?.findIndex((item) => item.sessionId === session.sessionId) ?? -1
+    if (index === -1) {
+      throw new Error(`Item with id ${session.sessionId} not found`)
+    } else {
+      sessions ? (sessions[index] = session) : undefined
+    }
+  })
+}
+
 export async function findSession(sessionId: string) {
+  console.log('findSessionDao', sessionId)
   const db = await lowDb()
   const sessions = db.data.sessions ?? []
   // eslint-disable-next-line unicorn/no-null

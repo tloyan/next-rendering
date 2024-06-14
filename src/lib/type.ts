@@ -44,7 +44,7 @@ export enum CategoriesEnum {
 export type Session = {
   sessionId: string
   userId: string
-  createdAt: string
+  expiresAt: string
 }
 
 export type AuthSession = {
@@ -52,6 +52,6 @@ export type AuthSession = {
   expires: Date
 }
 export enum SessionType {
-  COOKIES = 'COOKIES',
+  STATELESS = 'STATELESS',
   DATABASE = 'DATABASE',
 }

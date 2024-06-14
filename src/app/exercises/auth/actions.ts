@@ -1,22 +1,19 @@
 'use server'
 
 import {updateUserRole} from '@/db/sgbd'
-import {
-  SignInError,
-  logout as authLogout,
-  signIn,
-  signUp,
-  getUserFromCookiesSession,
-  getSession,
-} from './lib/auth'
-
+import auth from './lib/auth'
 import {RoleEnum} from '@/lib/type'
 import {revalidatePath} from 'next/cache'
+import {SignInError} from './lib/type'
+import {getConnectedUser} from './lib/dal'
 
 export async function authenticate(_currentState: unknown, formData: FormData) {
   console.log('authenticate...')
   try {
-    const user = await signIn('credentials', formData)
+    const user = await auth.signIn(
+      formData.get('email') as string,
+      formData.get('password') as string
+    )
     console.log('Signed in:', user)
     // Définir le cookie `currentUser`
   } catch (error) {
@@ -39,7 +36,10 @@ export async function authenticate(_currentState: unknown, formData: FormData) {
 export async function register(_currentState: unknown, formData: FormData) {
   console.log('register...')
   try {
-    const user = await signUp('credentials', formData)
+    const user = await auth.signUp(
+      formData.get('email') as string,
+      formData.get('password') as string
+    )
     console.log('Signed UP:', user)
     // Définir le cookie `currentUser`
   } catch (error) {
@@ -61,20 +61,16 @@ export async function register(_currentState: unknown, formData: FormData) {
 }
 
 export async function logout() {
-  revalidatePath('/exercises/auth')
-  return await authLogout()
+  auth.logout()
 }
 
 export async function getUserLogged() {
-  return await getUserFromCookiesSession()
+  //return await getUserFromCookiesSession()
 }
 
 export async function changeRole(_currentState: unknown, formData: FormData) {
   await new Promise((resolve) => setTimeout(resolve, 1000))
-  const user = await getSession()
-  //const user = await getUserById(session?.userId ?? '')
-  //console.log('changeRole session', session)
-  console.log('changeRole user', user)
+  const user = await getConnectedUser()
   if (!user) {
     return 'vous etes pas connecté'
   }

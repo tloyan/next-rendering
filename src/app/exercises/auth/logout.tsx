@@ -2,8 +2,10 @@
 import React, {useState} from 'react'
 import {Button} from '@/components/ui/button'
 import {logout} from './actions'
+import {UserDTO} from './lib/dal'
 
-export default function Logout() {
+export default function Logout({user}: {user: UserDTO}) {
+  console.log('Logout', user)
   return (
     <div>
       <h1 className="mb-4 text-center text-3xl font-bold">Logout</h1>

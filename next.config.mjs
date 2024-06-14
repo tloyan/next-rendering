@@ -12,6 +12,9 @@ const nextConfig = {
   // experimental: {
   //   ppr: true,
   // },
+  experimental: {
+    taint: true,
+  },
 }
 
 export default nextConfig
