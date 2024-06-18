@@ -12,7 +12,7 @@ import {
 } from '@/lib/type'
 import {JSONFilePreset} from 'lowdb/node'
 
-const randomError = true
+const randomError = false
 const slowConnexion = true
 const serverResponseTime = 2000
 
@@ -314,7 +314,7 @@ export async function updateUserRole(email: string, role: RoleEnum) {
     throw new Error('User not found')
   }
   user.role = role
-  updateUser(user)
+  await updateUser(user)
 }
 
 export async function getUserByEmail(email: string) {

@@ -1,22 +1,12 @@
 'use client'
 import React from 'react'
 import {useFormState as useActionState, useFormStatus} from 'react-dom'
-import {authenticate} from './actions'
+import {authenticate} from '../actions'
 import {Button} from '@/components/ui/button'
 import {Input} from '@/components/ui/input'
-//import {redirect} from 'next/navigation'
 
 export default function LoginForm() {
-  // Logic to determine if a redirect is needed
-  // const accessDenied = true
-  // if (accessDenied) {
-  //   redirect('/login')
-  // }
-  const [errorMessage, authenticateAction] = useActionState(
-    authenticate,
-    // eslint-disable-next-line unicorn/no-useless-undefined
-    undefined
-  )
+  const [actionState, authenticateAction] = useActionState(authenticate, {})
   return (
     <div>
       <h1 className="mb-4 text-center text-3xl font-bold">Login</h1>
@@ -28,6 +18,9 @@ export default function LoginForm() {
           required
           className="mb-4"
         />
+        {actionState?.errors?.email && (
+          <p className="text-sm text-red-500">{actionState.errors.email}</p>
+        )}
         <Input
           type="password"
           name="password"
@@ -35,9 +28,12 @@ export default function LoginForm() {
           required
           className="mb-4"
         />
+        {actionState?.errors?.password && (
+          <p className="text-sm text-red-500">{actionState.errors.password}</p>
+        )}
 
         <div className="text-red-500">
-          {errorMessage && <p>{errorMessage}</p>}
+          {actionState?.message && <p>{actionState.message}</p>}
         </div>
         <LoginButton />
       </form>

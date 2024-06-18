@@ -1,8 +1,8 @@
 'use client'
 import React, {useState} from 'react'
 import {Button} from '@/components/ui/button'
-import {logout} from './actions'
-import {UserDTO} from './lib/dal'
+import {logout} from '../actions'
+import {UserDTO} from '../lib/type'
 
 export default function Logout({user}: {user: UserDTO}) {
   console.log('Logout', user)

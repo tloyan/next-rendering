@@ -1,9 +1,9 @@
 'use client'
 import React from 'react'
 import {useFormState as useActionState, useFormStatus} from 'react-dom'
-import {changeRole} from './actions'
+import {changeUserRole} from '../actions'
 import {Button} from '@/components/ui/button'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 import {Input} from '@/components/ui/input'
 import {RoleEnum} from '@/lib/type'
 import {
@@ -13,12 +13,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import {cn} from '@/lib/utils'
 
 //import {redirect} from 'next/navigation'
 
-export default function AdminForm() {
-  const [errorMessage, changeRoleAction] = useActionState(
-    changeRole,
+export default function AdminChangeRoleForm() {
+  const [actionState, changeRoleAction] = useActionState(
+    changeUserRole,
     // eslint-disable-next-line unicorn/no-useless-undefined
     undefined
   )
@@ -26,17 +27,21 @@ export default function AdminForm() {
   const roles = Object.keys(RoleEnum).filter((key) => Number.isNaN(Number(key)))
   return (
     <div>
-      <h1 className="mb-4 text-center text-3xl font-bold">Change My Role</h1>
+      <h1 className="mb-4  text-center text-3xl font-bold">
+        Change Le role d&lsquo;un Utilisateur
+      </h1>
       <form action={changeRoleAction}>
-        {/* <Input
-          type="text"
-          name="role"
-          defaultValue={RoleEnum.ADMIN}
-          placeholder="ADMIN"
-          required
-          className="mb-4"
-        /> */}
         <div className="mb-4">
+          <Input
+            type="email"
+            name="email"
+            placeholder="Email"
+            required
+            className="mb-4"
+          />
+          {actionState?.errors?.email && (
+            <p className="text-sm text-red-500">{actionState.errors.email}</p>
+          )}
           <Select name="role">
             <SelectTrigger>
               <SelectValue placeholder="Select Role" />
@@ -49,10 +54,18 @@ export default function AdminForm() {
               ))}
             </SelectContent>
           </Select>
+          {actionState?.errors?.role && (
+            <p className="text-sm text-red-500">{actionState.errors.role}</p>
+          )}
         </div>
 
-        <div className="text-red-500">
-          {errorMessage && <p>{errorMessage}</p>}
+        <div
+          className={cn(
+            {'text-red-500': actionState?.errors},
+            {'text-green-500': !actionState?.errors}
+          )}
+        >
+          {actionState?.message && <p>{actionState?.message}</p>}
         </div>
         <LoginButton />
       </form>
@@ -70,7 +83,7 @@ function LoginButton() {
 
   return (
     <Button disabled={pending} type="submit" onClick={handleClick}>
-      Login
+      Change Other user Role
     </Button>
   )
 }

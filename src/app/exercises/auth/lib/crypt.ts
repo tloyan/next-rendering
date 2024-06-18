@@ -1,7 +1,8 @@
 import {SessionPayload} from './type'
 import {SignJWT, jwtVerify} from 'jose'
 
-export const EXPIRE_TIME = 10 * 1000
+const ONE_MINUTE = 60 * 1000
+export const EXPIRE_TIME = 10 * ONE_MINUTE //expires in 1 minutes
 const secretKey = process.env.SESSION_SECRET
 const useJwt = process.env.SESSION_USE_JWT === 'true'
 const key = new TextEncoder().encode(secretKey)

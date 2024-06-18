@@ -1,6 +1,6 @@
 import {cookies} from 'next/headers'
 import {NextResponse, type NextRequest} from 'next/server'
-import {decrypt, encrypt} from './app/exercises/auth/lib/crypt'
+import {EXPIRE_TIME, decrypt, encrypt} from './app/exercises/auth/lib/crypt'
 
 //cannot import bcrypt
 //https://nextjs.org/learn/dashboard-app/adding-authentication
@@ -10,6 +10,10 @@ const protectedRoutes = new Set([
   '/exercises/dashboard',
   '/dashboard',
   '/exercises/static-rendering',
+  '/exercises/dynamic-rendering',
+  '/exercises/streaming',
+  '/exercises/composition',
+  '/exercises/composition-2',
 ])
 const publicRoutes = new Set(['/login', '/signup', '/'])
 
@@ -44,7 +48,7 @@ export async function middleware(request: NextRequest) {
 
   //return NextResponse.next()
 
-  return await updateSession(request)
+  //return await updateSession(request)
 }
 
 export const config = {
@@ -61,7 +65,7 @@ export async function updateSession(request: NextRequest) {
   // Refresh the session so it doesn't expire
   //const parsed = JSON.parse(session) //await decrypt(session)
 
-  session.expiresAt = new Date(Date.now() + 60 * 10 * 1000)
+  session.expiresAt = new Date(Date.now() + EXPIRE_TIME)
   const res = NextResponse.next()
   res.cookies.set({
     name: 'session',

@@ -1,23 +1,12 @@
 'use client'
 import React from 'react'
 import {useFormState as useActionState, useFormStatus} from 'react-dom'
-import {register} from './actions'
+import {register} from '../actions'
 import {Button} from '@/components/ui/button'
 import {Input} from '@/components/ui/input'
 
-//import {redirect} from 'next/navigation'
-
 export default function RegisterForm() {
-  // Logic to determine if a redirect is needed
-  // const accessDenied = true
-  // if (accessDenied) {
-  //   redirect('/login')
-  // }
-  const [errorMessage, registerAction] = useActionState(
-    register,
-    // eslint-disable-next-line unicorn/no-useless-undefined
-    undefined
-  )
+  const [actionState, registerAction] = useActionState(register, {})
   return (
     <div>
       <h1 className="mb-4 text-center text-3xl font-bold">Register</h1>
@@ -29,6 +18,9 @@ export default function RegisterForm() {
           required
           className="mb-4"
         />
+        {actionState?.errors?.email && (
+          <p className="text-sm text-red-500">{actionState.errors.email}</p>
+        )}
         <Input
           type="password"
           name="password"
@@ -36,11 +28,26 @@ export default function RegisterForm() {
           required
           className="mb-4"
         />
+        {actionState?.errors?.password && (
+          <p className="text-sm text-red-500">{actionState.errors.password}</p>
+        )}
+        <Input
+          type="password"
+          name="confirmPassword"
+          required
+          className="mb-4"
+          placeholder="Confirm Password"
+        />
+        {actionState?.errors?.confirmPassword && (
+          <p className="text-sm text-red-500">
+            {actionState.errors.confirmPassword}
+          </p>
+        )}
 
-        <div className="text-red-500">
-          {errorMessage && <p>{errorMessage}</p>}
-        </div>
         <LoginButton />
+        <div className="text-red-500">
+          {actionState?.message && <p>{actionState?.message}</p>}
+        </div>
       </form>
     </div>
   )
@@ -56,7 +63,7 @@ function LoginButton() {
 
   return (
     <Button disabled={pending} type="submit" onClick={handleClick}>
-      Login
+      Register
     </Button>
   )
 }

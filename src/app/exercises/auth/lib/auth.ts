@@ -22,7 +22,7 @@ const signUp = async (email: string, password: string) => {
     email,
     password: hashedPassword,
     name: 'John Doe',
-    role: RoleEnum.USER,
+    role: RoleEnum.SUPER_ADMIN, //RoleEnum.USER,
   }
   const createdUser = await addUser(newUser)
   await createSession(createdUser.id)

@@ -1,7 +1,7 @@
 import {Label} from '@/components/ui/label'
 
-import LoginForm from '../login-form'
-import Logout from '../logout'
+import LoginForm from './login-form'
+import Logout from '../logout/logout'
 
 import {getConnectedUser} from '../lib/dal'
 

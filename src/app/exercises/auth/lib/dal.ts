@@ -2,7 +2,8 @@
 import {cache, experimental_taintUniqueValue} from 'react'
 import {verifySession} from './session'
 import {getUserById} from '@/db/sgbd'
-import {RoleEnum, User} from '@/lib/type'
+import {User} from '@/lib/type'
+import {UserDTO} from './type'
 
 export const getConnectedUser = cache(async () => {
   const session = await verifySession()
@@ -17,12 +18,6 @@ export const getConnectedUser = cache(async () => {
   }
 })
 
-export type UserDTO = {
-  email: string
-  name?: string
-  role?: RoleEnum
-  password?: string
-}
 export function userDTO(user: User): UserDTO {
   //console.log('taintUniqueValue', typeof taintUniqueValue)
   experimental_taintUniqueValue(
