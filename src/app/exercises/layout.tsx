@@ -24,6 +24,13 @@ export default function AppLayout({children}: PropsWithChildren) {
               >
                 <span>Home</span>
               </Link>
+
+              <Link
+                className="flex items-center space-x-2 font-bold"
+                href="/exercises/static-rendering"
+              >
+                <span>Static-rendering</span>
+              </Link>
               <div className="hidden items-center space-x-2 md:flex"></div>
             </div>
             <div className="flex items-center space-x-2">
@@ -32,6 +39,12 @@ export default function AppLayout({children}: PropsWithChildren) {
                 href="/exercises"
               >
                 Home
+              </Link>
+              <Link
+                className="text-sm font-semibold underline sm:hidden"
+                href="/exercises/static-rendering"
+              >
+                Static-rendering
               </Link>
 
               <ModeToggle />
