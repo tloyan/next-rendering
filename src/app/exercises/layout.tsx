@@ -27,6 +27,13 @@ export default function AppLayout({children}: PropsWithChildren) {
 
               <Link
                 className="flex items-center space-x-2 font-bold"
+                href="/instructions"
+              >
+                <span>Instructions</span>
+              </Link>
+
+              <Link
+                className="flex items-center space-x-2 font-bold"
                 href="/exercises/static-rendering"
               >
                 <span>Static-rendering</span>
