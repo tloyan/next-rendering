@@ -2,266 +2,147 @@
 
 ### 💡 Comprendre le rendu Statique
 
-# Bienvenue
+## 📝 Tes notes
 
-Ceci est un exemple de fichier **MDX** utilisant \`remark\` et \`remark-gfm\`.
+Detaille ce que tu as appris ici, sur une page [Notion](https://go.mikecodeur.com/course-notes-template)
 
-## Tableau avec GFM
+## Comprendre
 
-| Syntaxe   | Description |   Test Text |
-| :-------- | :---------: | ----------: |
-| Header    |    Title    | Here's this |
-| Paragraph |    Text     |    And more |
+Dans le cadre de Next.js, les React Server Components offrent une approche puissante pour la création d'interfaces utilisateur.
 
-## Liste de tâches
+**Cette technologie permet de réaliser le rendu des composants directement sur le serveur.**
 
-- [x] Ceci est une tâche terminée
-- [ ] Ceci est une tâche non terminée
+Une des particularités de Next.js est qu'il divise encore plus le travail de rendu par segments de route, facilitant ainsi le streaming et le rendu partiel des composants.
 
-## Composant personnalisé
+Il existe **trois stratégies de rendu côté serveur** distinctes que vous découvrirez au fil de ce module.
 
-```tsx
-import React from 'react'
+- Rendu statique
+- Rendu dynamique
+- Streaming
 
-interface IProps {
-  title: string
-}
-
-const MyComponent: React.FC<IProps> = ({title}) => {
-  return (
-    <div>
-      <h1>{title}</h1>
-    </div>
-  )
-}
-
-export default MyComponent
-```
-
-`;
-
-## Utilisation de JSX et JavaScript
-
-La date actuelle est : {new Date().getDate()}
-
-\`\`\`js
-console.log("Ceci est du code inline dans MDX");
-\`\`\`
-`;
-
-# FlexBox
-
-### **Partie 1 : Introduction à FlexBox**
-
-Félicitation à toi 🎉
-
-Tu viens de **maîtriser Css Grid** et honnêtement une fois que tu maitrise Css Grid, Flexbox va te sembler facile.
-
-C’est un outil qui va te demander moins “d’organisation”.
-
-Flexbox est un peu plus souple et moins structuré que Grid, ce qui le rend parfait pour les layouts qui nécessitent une flexibilité horizontale ou verticale. Il est idéal pour aligner des éléments dans une seule direction (horizontale ou verticale), ce qui en fait l'outil de choix pour les composants d'interface utilisateur comme les barres de navigation, les galeries, ou même pour des layouts entiers lorsqu'ils sont simples.
-
-> Pour l’anecdote, lorsque j’ai appris les bases du html et css , grid était encore tout récent et donc j’utilisait flexbox pour tous mes layouts. Aujourd’hui il y a de nombreux cas dans lequel je suis content d’avoir Grid mais c’est pour te dire que FlexBox est puissant par sa simplicité et te permet de quasiment tout faire.
-
-### **Petite Histoire de Flexbox**
-
-Flexbox a été introduit pour la première fois dans les spécifications du W3C en 2009. Sa création visait à résoudre les problèmes que les développeurs rencontraient avec les anciennes méthodes de mise en page.
-
-> Une minute de silence pour les développeurs qui devaient faire des hacks avec float et faire face aux problèmes d'alignement vertical qui donnaient des maux de tête atroce.
-
-La simplicité et la flexibilité de Flexbox ont rapidement conquis la communauté des développeurs. Contrairement à CSS Grid qui est conçu pour gérer les deux dimensions (colonnes et lignes), Flexbox est unidimensionnel, se concentrant soit sur les colonnes, soit sur les lignes, ce qui le rend plus simple et direct pour certains types de layouts.
-
-### **Pourquoi Flexbox ?**
-
-Flexbox nous permet de créer des designs réactifs avec moins d'effort. La disposition des éléments devient intuitive, et les problèmes comme l'alignement vertical ou la création d'espaces égaux entre les éléments sont résolus élégamment. En maîtrisant Flexbox, tu auras un outil puissant dans ta boîte à outils de design web, capable de gérer un large éventail de situations avec simplicité et efficacité.
-
-Dans les prochaines parties, nous plongerons dans les propriétés de Flexbox, apprendrons comment les utiliser pour créer des layouts élégants et explorerons des exemples concrets. Prépare-toi à ajouter une autre compétence essentielle à ton arsenal de développeur web !
-
-## **Partie 2 : Pratique de FlexBox**
-
-### 1/6 - Les propriétés
-
-Tout comme dans le cours sur Css Grid, je t’ai préparé un tableau avec la liste des propriétés liées à Flex.
+Chacune de ces stratégies offre des avantages spécifiques en termes de performance et de gestion des ressources, que nous allons explorer ensemble.
 
 <aside>
-⚠️ Fais un tour rapide des différentes propriétés et passe à la suite, on reviendra ici plus tard.
+💡 Rappel sur les Avantages des RSC :
 
 </aside>
 
-| Propriété       | Valeurs                                                                      | Utilité                                                                                                |
-| --------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| display         | flex ou inline-flex                                                          | Définit un élément comme un conteneur flex.                                                            |
-| flex-direction  | row / row-reverse / column / column-reverse                                  | Définit la direction principale des éléments dans le conteneur flex.                                   |
-| flex-wrap       | nowrap / wrap / wrap-reverse                                                 | Contrôle si les éléments sont forcés sur une seule ligne ou peuvent s'envelopper sur plusieurs lignes. |
-| flex-flow       | row wrap / column nowrap                                                     | Raccourci pour flex-direction et flex-wrap.                                                            |
-| justify-content | flex-start / flex-end / center / space-between / space-around / space-evenly | Alignement des éléments à l'intérieur du conteneur flex sur l'axe principal.                           |
-| align-items     | stretch / flex-start / flex-end / center / baseline                          | Alignement des éléments sur l'axe transversal (perpendiculaire à l'axe principal).                     |
-| align-content   | stretch / flex-start / flex-end / center / space-between / space-around      | Alignement des lignes flexibles dans l'espace multidimensionnel.                                       |
-| order           | 0 / 1 / -1                                                                   | Contrôle l'ordre dans lequel les éléments apparaissent dans le conteneur flex.                         |
-| flex-grow       | 0 / 1 / 2                                                                    | Définit la capacité d'un élément à croître pour remplir l'espace disponible.                           |
-| flex-shrink     | 1 / 0                                                                        | Définit la capacité d'un élément à rétrécir si nécessaire.                                             |
-| flex-basis      | auto / 100px / 50%                                                           | Définit la taille initiale d'un élément avant la répartition de l'espace restant.                      |
-| flex            | 0 1 auto / 1 0 50%                                                           | Raccourci pour flex-grow, flex-shrink et flex-basis.                                                   |
+- **Récupération de Données** : Déplace la récupération de données vers le serveur pour améliorer les performances.
+- **Sécurité** : Maintient les données sensibles et la logique sur le serveur, évitant toute exposition au client.
+- **Mise en Cache** : Permet la mise en cache du rendu pour réutilisation, réduisant les coûts et améliorant la rapidité.
+- **Performance** : Optimise l'usage du JavaScript côté client, bénéfique pour les utilisateurs avec des connexions lentes ou des appareils moins puissants.
+- **Chargement Initial de la Page ([FCP](https://web.dev/articles/fcp?hl=fr))** : Génère du HTML sur le serveur pour un affichage immédiat, sans attendre le JavaScript client.
+- **SEO et Partage sur les Réseaux Sociaux** : Utilise le HTML rendu pour l'indexation par les moteurs de recherche et la création de prévisualisations pour les réseaux sociaux.
+- **Streaming** : Divise le travail de rendu en morceaux qui sont envoyés au client dès qu'ils sont prêts, accélérant la visualisation.
 
-### 2/6 - **Mise en Place de FlexBox**
+**La première stratégie est le rendu statique :**
 
-Pour définir un élément Flex il suffit simplement de lui attribuer la propriété **`display`** avec la valeur **`flex`** ou **`inline-flex`**.
+C’est la stratégie par default de Next. Cette stratégie consiste à générer le rendu de chaque route au `“build time”` c’est à dire lors [de la compilation](https://nextjs.org/docs/architecture/nextjs-compiler) ou après `une demande de revalidation` .
 
-Si tu te demandes quelle est la différence entre les deux, voici grosso modo à quoi correspond chacun d’entre eux:
+En tant que développeur il vaut avoir conscience que le comportement ne notre application peut être impacté selon que nous soyons en mode développement (`'pnpm dev'`)ou en mode production (’`pnpm build`’ / ‘`pnpm start`’)
 
-Pour comprendre **`inline-flex`** dis toi qu’il permet au conteneur flex de s'intégrer dans le flux en ligne (comme **`inline-block`** le ferait), tout en donnant à ses éléments internes un comportement flex (alignement, ordre, flexibilité).
+Afin de nous aider dans les exercices nous avons un composant `env-component.tsx` qui détecte dans quel environnement nous sommes pour éviter les incompréhensions. Il utilise :
 
-Mais **99%** du temps nous utilisons **`display: flex`.** c’est très rare de voir `inline-flex` utilisé.
-
-```html
-<div class="flex_container">
-  <div class="item_1">FLEX 1</div>
-  <div class="item_2">FLEX 2</div>
-  <div class="item_3">FLEX 3</div>
-</div>
+```tsx
+const environment = process.env.NODE_ENV
 ```
 
-```css
-.flex_container {
-  display: flex;
-}
+Nous avons également un composent `<RenderTime />` qui nous donne 3 types d’informations
+
+- Si le composant est un RCC ou RSC
+- L’environnement (Dev ou Prod)
+- L’heure du rendu de la page
+
+```tsx
+<RenderTime />
+//Server component (Env: development) Rendu le 2024-06-25T08:13:29.956Z
 ```
 
-Et voila , nous avons notre premier élément Flex !
+- Impact du HMR (Hot Module Reload) en mode DEV.
 
-Avec **`display: flex;`**, nos éléments **`div`**, qui sont des blocs par défaut (prenant toute la largeur disponible), se retrouvant alignés côte à côte sur une ligne. C'est le pouvoir de Flexbox : il transforme la manière dont les éléments enfants sont disposés, sans avoir besoin de propriétés supplémentaires.
-
-### **3/6 - Comprendre le Flex Container**
-
-Dans cette section, nous allons explorer en détail les propriétés du conteneur Flex et comment elles influencent les éléments enfants.
-
-- **La propriété `flex-direction`**: montre comment cette propriété définit la direction principale des éléments flex.
-
-![31selecPropriVal.jpg](/course/default.jpg)
-
-![29selecPropriVal.jpg](FLEX%20BOX%200d9b4d9cddf34fd8bbfd368a73c3ce1a/29selecPropriVal.jpg)
-
-- **La propriété `flex-wrap`**: montre comment les éléments flex peuvent être forcés à rester sur une seule ligne ou à s'enrouler sur plusieurs lignes.
-
-![30selecPropriVal (1).jpg](<FLEX%20BOX%200d9b4d9cddf34fd8bbfd368a73c3ce1a/30selecPropriVal_(1).jpg>)
-
-![33selecPropriVal.jpg](FLEX%20BOX%200d9b4d9cddf34fd8bbfd368a73c3ce1a/33selecPropriVal.jpg)
-
-- **La propriété `flex-flow`**: Introduis ce raccourci pour **`flex-direction`** et **`flex-wrap`**.
-- **Les propriétés `justify-content`, `align-items`, et `align-content`**: montre comment aligner et répartir l'espace entre les éléments flex.
-
-![32selecPropriVal (1).jpg](<FLEX%20BOX%200d9b4d9cddf34fd8bbfd368a73c3ce1a/32selecPropriVal_(1).jpg>)
-
----
-
-align-content et align-items sont souvent confondus, voici comment bien choisir entre les deux :
-
-**`align-items`** : Imaginez que vous alignez des icônes sur une ligne de vos application téléphone. **`align-items`** détermine si les icônes sont alignées en haut de la ligne, centrées, ou alignées en bas.
-
-**`align-content`** : Maintenant, pensez que vous avez plusieurs lignes d'icônes, comme votre écran d'accueil complet avec plusieurs lignes. Si votre écran n'est pas complètement rempli et que vous avez de l'espace supplémentaire en haut et en bas, **`align-content`** décide comment ces lignes d'icônes sont espacées verticalement sur l'écran entier.
-
-En résumé :
-
-- Utilisez **`align-items`** pour choisir comment placer les éléments individuellement dans la ligne (haut, milieu, bas).
-- Utilisez **`align-content`** quand vous avez plusieurs lignes et de l'espace extra pour espacer ces lignes sur tout l'écran.
-
-Si vous n'avez qu'une seule ligne d'icônes, **`align-content`** n’a pas d'effet.
-
-### **4/6 - Maîtriser les Flex Items**
-
-Cette section se concentre sur les éléments individuels à l'intérieur d'un conteneur Flex.
-
-- **La propriété `order`**: Comment réarranger l'ordre visuel des éléments.
-  ![34selecPropriVal.jpg](FLEX%20BOX%200d9b4d9cddf34fd8bbfd368a73c3ce1a/34selecPropriVal.jpg)
-- **La propriété `flex-grow`**: Enseignez comment un élément peut grandir pour remplir l'espace disponible.
-- **La propriété `flex-shrink`**: Expliquez comment les éléments peuvent rétrécir pour s'adapter à l'espace disponible.
-- **La propriété `flex-basis`**: Démontrez comment définir la taille initiale d'un élément flex.
-- **La propriété `flex`**: Introduisez ce raccourci pour **`flex-grow`**, **`flex-shrink`**, et **`flex-basis`**.
-
-Ces derniers points peuvent être souvent mal compris, alors nous allons essayer de voir ce qui les différence et à quoi chacun d’entre eux servent en simplifiant les propriétés **`flex-grow`**, **`flex-shrink`** et **`flex-basis`**. Ces propriétés déterminent comment un élément va s'adapter à l'espace disponible dans un conteneur Flex.
-
-Imaginez que trois amis, Alice, Bob et Charlie, sont assis sur un banc qui peut s'étirer et se rétrécir. Ce banc est notre conteneur Flex.
-
-![35selecPropriVal.jpg](FLEX%20BOX%200d9b4d9cddf34fd8bbfd368a73c3ce1a/35selecPropriVal.jpg)
-
-**`flex-grow`** : Alice aime l'espace. Si on lui donne un **`flex-grow`** de 1, elle s'étendra pour occuper tout l'espace libre sur le banc. Si Bob a un **`flex-grow`** de 2, il prendra deux fois plus d'espace libre que Alice. Charlie, avec un **`flex-grow`** de 0, ne s'étend pas du tout, il reste confortablement dans son espace initial.
-
-![36selecPropriVal.jpg](FLEX%20BOX%200d9b4d9cddf34fd8bbfd368a73c3ce1a/36selecPropriVal.jpg)
-
-**`flex-shrink`** : Maintenant, supposons que le banc doit se rétrécir pour rentrer dans un espace plus petit. Si Alice a un **`flex-shrink`** de 1 et Charlie de 3, Charlie se rétrécira deux fois plus qu'Alice pour s'assurer qu'ils rentrent tous confortablement. Bob, avec un **`flex-shrink`** de 0, refuse de se rétrécir et garde sa taille, mettant la pression sur Alice et Charlie pour qu'ils se rétrécissent davantage.
-
-![37selecPropriVal.jpg](FLEX%20BOX%200d9b4d9cddf34fd8bbfd368a73c3ce1a/37selecPropriVal.jpg)
-
-**`flex-basis`** : C'est la quantité d'espace que chaque ami occupe au départ. Si on dit à Alice que son **`flex-basis`** est de 100px, elle commencera avec 100 pixels d'espace sur le banc avant de grandir ou de rétrécir. C'est l'espace personnel de départ d'Alice.
-
-à noter que contrairement à width, flexbasis agit dans la direction du flex.
-
-si `flex-direction: row` alors flex-basis agira sur la width.
-
-si `flex-direction: column` alors flex-basis agira sur la height.
-
-> Mon conseil si vous ne souhaitez pas avoir de surprise, c’est de travailler avec width et height plutôt que flex-basis, dans 99% des cas notre composant possède une taille et une forme bien particulière.
-
-**`flex`** : C'est comme dire à nos amis comment se comporter avec un seul chiffre. Si on dit à Alice **`flex: 1 0 100px;`**, cela signifie qu'elle peut s'étendre (grandir), refuser de se rétrécir, et commencer avec 100 pixels d'espace.
-
-En résumé, **`flex-grow`** est combien chacun s'étend, **`flex-shrink`** est combien chacun se rétrécit, et **`flex-basis`** est l'espace de départ de chacun. Cela aide Alice, Bob et Charlie à partager le banc de manière flexible, s'ajustant à sa taille changeante.
-
----
-
-## Conclusion:
-
-Ce chapitre sur flex est tout aussi important que celui sur les Grid mais il sera sûrement plus facilement assimilé.
-
-À titre personnel , les propriétés flex sont celles que j’utilise le plus au quotidien.
-
-C’est tellement pratique et facile que je ne m’en passe jamais.
+Le HMR détecte tout changement de fichier dans le projet, il `rebuild` et régénère le content. C’est pour cela qu’il faut tester le comportement en mode “production” .
 
 ## Exercice
 
-suis la consigne de notre amis Mowgli 🐶
+🐶 Dans cet exercice tu vas devoir afficher un segment de route statique. Cela est le comportement par default d’un React Server Component avec Next.
 
-J’ai repris ce que nous avons construit précédemment dans Grid pour y intégrer des éléments Flex.
+Dans la route `/exercise/static-rendering` il va falloir faire un appel à un source de données.
 
-## Bonus 1
+```tsx
+import {getPosts} from '@/db/sgbd'
+//...
+getPosts()
+```
 
-Ici je veux que tu t’amuses avec flex-shrink et flex-basis.
+Et afficher ces post statiquement sur cette route. Pour vérifier que le comportement est correcte, tu peux modifier la source de données en ajoutant ou modifiant des `Posts` par exemple. Comme nous sommes en statique, le contenu ne devrait plus être modifié à l’ecran
 
-Ces deux propriétés sont surtout assimilées lorsque nous les manipulons.
+```tsx
+//src/db/db.json
+//Modifier les postes en BDD pour tester le comportement
+"posts": [
+    {
+      "id": "1",
+      "title": "Default post"
+    },
+    {
+      "id": "2",
+      "title": "Un post"
+    }
+  ],
+```
 
-Je vais donc te demander dans :
+Ce mode de fonctionnement ressemble à un système de cache (infini) car on accède une seule fois à la source de données. Ces données peuvent ensuite être dispatcher a plusieurs serveurs CDN
 
-```css
-.customBox {
-  background: white;
-  border-radius: 10px;
-}
+Fichiers
 
-.customBox:nth-child(odd) {
+- `exercise/static-rendering/page.tsx`
+
+## Bonus
+
+### 1. 🚀 Revalidation
+
+Le routes statiques peuvent être regénérées [en se basant sur le temps](https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating#revalidating-data)
+
+```tsx
+export const revalidate = 3600 // revalidate at most every hour
+```
+
+ou [manuellement](https://www.notion.so/1-Static-Rendering-b518ffb87d1241d9b7faa9984b54d1f9?pvs=21)
+
+Les données peuvent être revalidées à la demande par chemin (`revalidatePath`) ou par balise de cache (`revalidateTag`) dans une action serveur ou un gestionnaire de route. exemple
+
+```tsx
+'use server'
+
+import {revalidateTag} from 'next/cache'
+
+export default async function action() {
+  revalidateTag('collection')
 }
 ```
 
-D’ajouter dans un premier temps flex-basis de 100px à notre customBox.
+**🐶** Dans cet exercice tu vas devoir faire une revalidation toutes les 10 secondes. Pour tester modifie le fichier de base de données
 
-Puis ajoute les propriétés flex-grow et flex-shrink aux 2 customBox.
+Fichiers
 
-J’espère que tu n’as pas oublié à quoi servait ceci : `:nth-child(odd)` 🫠
+- `exercise/static-rendering/page.tsx`
 
-voici un petit rafraichissement de mémoire : [documentation](https://developer.mozilla.org/fr/docs/Web/CSS/:nth-child)
+###
 
-## Allez plus loin
+## Aller plus loin
 
-- FlexBox
+📑 Static Rendering : [https://nextjs.org/docs/app/building-your-application/rendering/server-components#static-rendering-default](https://nextjs.org/docs/app/building-your-application/rendering/server-components#static-rendering-default)
 
-📑 [Le lien vers la documentation](https://developer.mozilla.org/fr/docs/Web/CSS/CSS_flexible_box_layout/Basic_concepts_of_flexbox)
+📑 Le lien vers la doc revalidation [https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating#revalidating-data](https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating#revalidating-data)
 
-- nth-child
+## Ils vont t’aider
 
-📑 [Le lien vers la documentation](https://developer.mozilla.org/fr/docs/Web/CSS/:nth-child)
+- **🐶 Mowgli le Chien** : _Mowgli te guidera dans chaque exercice._
+- **🤖 Ash le Robot** : _Ash le Robot te donnera du code utile._
+- **🚀 Julia La roquette** : _Julia te donnera des défis supplémentaires._
+- **⛏️ Hulk le Marteau** : _Quand du code à supprimer est présent_
+- **👨‍✈️ Hugo le chef de projet** : _Va t'aider sur les spécifications du projet_
 
 ## 🐜 Feedback
 
-Remplir [le formulaire de feedback](https://go.mikecodeur.com/cours-react-avis?entry.1430994900=React%20Pr%C3%A9requis%20d%C3%A9butants&entry.533578441=1%20Rappel%20HTML%20CSS).
-
-```jsx
-https://go.mikecodeur.com/cours-react-avis?entry.1912869708=TypeScript%20PRO&entry.1430994900=2.Les%20Fondamentaux&entry.533578441=01%20Les%20bases
-```
+Remplir le formulaire le [formulaire de FeedBack](https://go.mikecodeur.com/cours-next-avis?entry.1912869708=Next%20PRO&entry.1430994900=Rendering%20Avancée&entry.533578441=01%20Static%20Rendering).

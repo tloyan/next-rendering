@@ -8,10 +8,9 @@ export default function Page() {
 
   return (
     <div className="flex h-full w-full flex-col items-center">
-      <h1 className="text-center text-xl font-bold">Ibnstruction</h1>
-      <div className="flex w-full justify-center">
+      <div className="mt-4 flex w-full justify-center">
         <div
-          className={`prose dark:prose-invert w-auto max-w-4xl code-theme-${theme}`}
+          className={`prose mb-4 w-auto max-w-4xl dark:prose-invert code-theme-${theme}`}
           suppressHydrationWarning
         >
           <Instruction />
