@@ -11,9 +11,9 @@ export default function RenderTime({
     <div className="flex flex-auto items-center justify-center ">
       <p className="text-sm">
         <EnvComponent name={name} disabled={disabled} />
-        Rendu le&nbsp;
+        Rendu à&nbsp;
         <span className="animate-color-cycle" suppressHydrationWarning>
-          {new Date().toISOString()}
+          {new Date().toLocaleTimeString()}
         </span>
       </p>
     </div>

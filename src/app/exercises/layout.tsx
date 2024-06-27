@@ -38,6 +38,13 @@ export default function AppLayout({children}: PropsWithChildren) {
               >
                 <span>Static-rendering</span>
               </Link>
+              <Link
+                className="flex items-center space-x-2 font-bold"
+                href="/exercises/dynamic-rendering"
+              >
+                <span>Dynamic-rendering</span>
+              </Link>
+
               <div className="hidden items-center space-x-2 md:flex"></div>
             </div>
             <div className="flex items-center space-x-2">
@@ -52,6 +59,12 @@ export default function AppLayout({children}: PropsWithChildren) {
                 href="/exercises/static-rendering"
               >
                 Static-rendering
+              </Link>
+              <Link
+                className="text-sm font-semibold underline sm:hidden"
+                href="/exercises/dynamic-rendering"
+              >
+                Dynamic-rendering
               </Link>
 
               <ModeToggle />
