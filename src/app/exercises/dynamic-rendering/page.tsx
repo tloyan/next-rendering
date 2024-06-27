@@ -13,6 +13,11 @@ const Page = async () => {
             search-params
           </Link>
         </li>
+        <li>
+          <Link href="/exercises/dynamic-rendering/cookies-headers">
+            cookies-headers
+          </Link>
+        </li>
       </ul>
     </div>
   )
