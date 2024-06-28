@@ -1,6 +1,6 @@
-# Dynamic Rendering - Cookies - Headers - Fetch
+# Dynamic Rendering (Cache options)
 
-### 💡 Dynamic Rendering - Cookies - Headers - Fetch
+### 💡 Comprendre le rendu dynamique avec cache de data
 
 ## 📝 Tes notes
 
@@ -8,138 +8,59 @@ Detaille ce que tu as appris ici, sur une page [Notion](https://go.mikecodeu
 
 ## Comprendre
 
-Nous allons aborder 3 autres manières de rendre nos RSC Dynamique.
+Il existe d’autres méthodes pour effectuer des rendus dynamiques. Une assez utile est en modifiant les options de cache des données.
 
-- Via l’accès au headers (http)
-- Via l’accès au cookies (http)
-- Via Fetch (option)
+`fetch` requests are **not** cached if:
 
-Pour accéder aux Headers Http :
+- The `cache: 'no-store'` is added to `fetch` requests.
+- The `revalidate: 0` option is added to individual `fetch` requests.
+- The `fetch` request is inside a Router Handler that uses the `POST` method.
+- The `fetch` request comes after the usage of `headers` or `cookies`.
+- The `const dynamic = 'force-dynamic'` route segment option is used.
+- The `fetchCache` route segment option is configured to skip cache by default.
+- The `fetch` request uses `Authorization` or `Cookie` headers and there's an uncached request above it in the component tree.
 
-```tsx
-import {headers} from 'next/headers'
-...
-const headersList = headers()
-const referer = headersList.get('referer')
-```
-
-📑 Le liens vers la doc [https://nextjs.org/docs/app/api-reference/functions/cookies](https://nextjs.org/docs/app/api-reference/functions/cookies)
-
-Pour accéder aux Cookies
-
-```tsx
-import {cookies} from 'next/headers'
-...
-const cookieStore = cookies()
-```
-
-📑 Le liens vers la doc [https://nextjs.org/docs/app/api-reference/functions/headers](https://nextjs.org/docs/app/api-reference/functions/headers)
+📑 Le liens vers la doc https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating#opting-out-of-data-caching
 
 ## Exercice
 
-👨‍✈️ Hugo le chef de projet nous informe que nous allons devoir filtrer les `posts` aux personnes qui sont connectées uniquement (qui ont un `cookies` avec `userid`).
-
-Pour simuler le cookies tu peux aller dans Chrome / Inspecter / Application / Cookies et ajouter une cookie
-
-![Untitled](/course/useragent.png)
-
-- 🐶 Adapte le composant actuel qui a un rendu statique en rendu dynamique en vérifiant la présence du cookies
-- Si pas de cookies `userid` —> pas de `post`
-- Si cookies `userid` —> affichage des `posts`
+Dans cet exercice tu vas devoir faire un rendu dynamique en utilisant la fonction [noStore](https://nextjs.org/docs/app/api-reference/functions/unstable_noStore)
 
 Fichiers
 
-- `/exercises/dynamic-rendering/cookies-headers/page.tsx`
+- `/exercises/dynamic-rendering/cache-options/page.tsx`
 
 ## Bonus
 
-### 1. 🚀 Rendu Dynamique avec Headers
+### 1. 🚀 force-dynamique
 
-👨‍✈️ Hugo le chef de projet te demande un règle un peut spéciale. Il te demande de ne pas afficher de post sur une version particulière du navigateur en se basant sur le user-agent. Tu peux retrouver les valeurs dans la requête HTTP
-
-![Untitled](/course/useragent.png)
+Il existe une option de route pour rendre le contenu dynamique.
 
 ```tsx
-[Set cookies](/course/useragent)
+export const dynamic = 'force-dynamic'
 ```
 
-Pour filtrer la version 126 tu peux par exemple faire :
-
-```tsx
-!userAgent?.includes('Chrome/126.0.0.0')
-```
-
-🐶 Adapte le code pour filtrer ta version de navigateur
-
-- Si pas de ta version —> pas de `post`
-- Si autres version —> affichage des `posts`
+**🐶** Utilise `force-dynamic` pour faire du rendu dynamique
 
 Fichiers
 
-- `/exercises/dynamic-rendering/cookies-headers/page.tsx`
+- `/exercises/dynamic-rendering/cache-options/page.tsx`
 
-### 2. 🚀 Fetch
+### 2. 🚀 revalidate
 
-[L’API Fetch](https://developer.mozilla.org/fr/docs/Web/API/Fetch_API/Using_Fetch) à des options pour garder les données en cache. (Mais il s’agit de la mémoire cache du navigateur)
-
-[Next étends](https://nextjs.org/docs/app/api-reference/functions/fetch) l’[api Fetch](https://developer.mozilla.org/fr/docs/Web/API/Fetch_API/Using_Fetch) et permet de récupérer les données distantes et gérer les données en cache mais coté serveur.
+Utilise une [revalidation basé sur le temps](https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating#time-based-revalidation)
 
 ```tsx
-export default async function Page() {
-  // This request should be cached until manually invalidated.
-  // Similar to `getStaticProps`.
-  // `force-cache` is the default and can be omitted.
-  const staticData = await fetch(`https://...`, { cache: 'force-cache' })
-
-  // This request should be refetched on every request.
-  // Similar to `getServerSideProps`.
-  const dynamicData = await fetch(`https://...`, { cache: 'no-store' })
-
-  // This request should be cached with a lifetime of 10 seconds.
-  // Similar to `getStaticProps` with the `revalidate` option.
-  const revalidatedData = await fetch(`https://...`, {
-    next: { revalidate: 10 },
-  })
-
-  return <div>...</div>
-}
-```
-
-<aside>
-💡 Depuis Next 15.0.0 : Default cache option was changed from `'force-cache'` to `'no-store’`
-
-</aside>
-
-Dans cet exercice bonus Supprimer l’appel a `getPosts` et remplace le par un fetch
-
-```tsx
-const data = await fetch('https://jsonplaceholder.typicode.com/posts', ...
-//pense a tester les otions pour faire un rendu statique et dynamique
-const posts = await data.json()
-```
-
-Constate lors de la compilation le changement de mode de rendu ƒ
-
-```tsx
-├ ƒ /exercises/dynamic-rendering/cookies-headers  154 B          88.5 kB
-├ ○ /exercises/static-rendering                   154 B          88.5 kB
-+ First Load JS shared by all                     88.4 kB
-  ├ chunks/162-85a026428100bb9c.js                32.1 kB
-  ├ chunks/92b01630-b398710d6ee562b5.js           54.4 kB
-  └ other shared chunks (total)                   1.86 kB
-
-○  (Static)   prerendered as static content
-●  (SSG)      prerendered as static HTML (uses getStaticProps)
-ƒ  (Dynamic)  server-rendered on demand
+export const revalidate = 0
 ```
 
 Fichiers
 
-- `/exercises/dynamic-rendering/cookies-headers/page.tsx`
+- `/exercises/dynamic-rendering/cache-options/page.tsx`
 
 ## Aller plus loin
 
-📑 Le lien vers la doc [https://nextjs.org/docs/app/building-your-application/rendering/server-components#dynamic-functions](https://nextjs.org/docs/app/building-your-application/rendering/server-components#dynamic-functions)
+📑 Le lien vers la doc [https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating#time-based-revalidation](https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating#time-based-revalidation)
 
 ## Ils vont t’aider
 
@@ -151,4 +72,8 @@ Fichiers
 
 ## 🐜 Feedback
 
-Remplir le formulaire le [formulaire de FeedBack](https://go.mikecodeur.com/cours-next-avis?entry.1912869708=Next%20PRO&entry.1430994900=Rendering%20Avancée&entry.533578441=03%20dynamic-rendering-cookies).
+Remplir le formulaire le formulaire de FeedBack.
+
+```jsx
+https://go.mikecodeur.com/cours-next-avis?entry.1912869708=Next%20PRO&entry.1430994900=Rendering%20Avancée&entry.533578441=04%20dynamic-rendering-cache
+```

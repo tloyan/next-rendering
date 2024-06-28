@@ -18,6 +18,11 @@ const Page = async () => {
             cookies-headers
           </Link>
         </li>
+        <li>
+          <Link href="/exercises/dynamic-rendering/cache-options">
+            cache-options
+          </Link>
+        </li>
       </ul>
     </div>
   )

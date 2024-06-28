@@ -1,9 +1,32 @@
-export {default} from './page.exercise'
+import RenderTime from '@/components/render-time'
+import {getPosts} from '@/db/sgbd'
+import {Post} from '@/lib/type'
+import {cookies, headers} from 'next/headers'
 
-//export {default} from './page.final'
+const Page = async () => {
+  // const data = await fetch('https://jsonplaceholder.typicode.com/posts', {
+  //   cache: 'no-store',
+  // })
+  // const posts = await data.json()
 
-//1. 🚀 Rendu Dynamique avec Headers
-//export {default} from './page.bonus-1'
+  const posts = await getPosts()
 
-//2. 🚀 Fetch
-//export {default} from './page.bonus-2'
+  const headersList = headers()
+  const userAgent = headersList.get('User-Agent')
+  if (!userAgent?.includes('Chrome/126.0.0.0')) posts.length = 0
+
+  const cookieStore = cookies()
+  const uid = cookieStore.get('userid')?.value ?? undefined
+  if (!uid) posts.length = 0
+
+  return (
+    <div className="mx-auto max-w-4xl p-6 text-lg">
+      <h1 className="mb-4 text-center text-3xl font-bold">Fetch Posts</h1>
+      <ul className="list-disc p-4 pl-4">
+        {posts?.map((post: Post) => <li key={post.title}>{post.title}</li>)}
+      </ul>
+      <RenderTime />
+    </div>
+  )
+}
+export default Page
