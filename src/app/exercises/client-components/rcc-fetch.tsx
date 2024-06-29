@@ -7,7 +7,6 @@ import {use, useMemo, useState} from 'react'
 export default function RccFetch() {
   const promise = useMemo(() => getData(), [])
   const data: Post[] = use(promise)
-  // console.log('data', data)
   const [message, setMessage] = useState('Combien de data y a-t-il ?')
 
   return (
