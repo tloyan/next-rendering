@@ -1,6 +1,6 @@
-# Streaming (Loading et Skeleton)
+# Client Component - External Librairy
 
-### 💡 Comprendre le Streaming
+### 💡 Comment utiliser des librairies externes (client Component)
 
 ## 📝 Tes notes
 
@@ -8,125 +8,170 @@ Detaille ce que tu as appris ici, sur une page [Notion](https://go.mikecodeu
 
 ## Comprendre
 
-Dans ce module, nous abordons le rendu streaming, une technique qui permet de rendre progressivement l'interface utilisateur côté serveur.
+Les **React Serveur Components (RSC)** ont de nombreux avantages:
 
-Cette approche découpe le travail en segments, les diffusant au client dès qu'ils sont prêts. Ainsi, l'utilisateur peut visualiser des parties de la page immédiatement, même si tout le contenu n'est pas encore complètement rendu.
+- **Optimisation du rendu initial :** Ils permettent d'optimiser le rendu initial en évitant de transférer du code JavaScript non utilisé.
+- **Réduction du temps de chargement :** En limitant les transferts de données, ils réduisent le temps de chargement initial des pages.
+- **Meilleure gestion des ressources :** Ils facilitent une meilleure gestion des ressources côté serveur en minimisant le travail répétitif.
+- **Amélioration de la sécurité :** En réduisant l'exposition du code client, ils améliorent la sécurité de l'application.
+- **Meilleure expérience utilisateur :** En permettant un chargement plus rapide et une interface plus réactive, ils améliorent l'expérience globale des utilisateurs.
 
-Le streaming intégré au routeur d'application de Next.js améliore la performance de chargement initial des pages et facilite l'affichage d'interfaces dépendant de récupérations de données lentes.
+**Cependant il ne peuvent pas tout faire :**
 
-Séquentiel vs Paralell :
-![server-rendering-without-streaming-chart.avif](/course/sequential-parallel-data-fetching.avif)
+Nous avons toujours besoins de React Client Component (RCC) pour :
 
-Partiel content
-![server-rendering-without-streaming-chart.avif](/course/server-rendering-with-streaming.avif)
+- **Interactivité :** Les composants côté client peuvent utiliser l'état, les effets et les écouteurs d'événements, ce qui leur permet de fournir un retour immédiat à l'utilisateur et de mettre à jour l'interface utilisateur.
+- **APIs du navigateur :** Les composants côté client ont accès aux APIs du navigateur, comme la `géolocalisation` ou `localStorage`.
 
-📑 Le liens vers la doc [https://nextjs.org/docs/app/building-your-application/rendering/server-components#streaming](https://nextjs.org/docs/app/building-your-application/rendering/server-components#streaming)
-
-## Exercice
-
-Dans cet exercice nous avons des composants (RSC) qui sont long à charger (plusieurs secondes).
-
-- `<ProductList>` —> 2 secondes
-- `<PostList>` —> 5 secondes
-
-Ces composants sont chargés dans un Dashboard sur le segment de route : [/exercises/streaming](http://localhost:3000/exercises/streaming)
-
-![streaming-exca.png](/course/streaming-exca.png)
-
-**👨‍✈️ Hugo le chef de projet** demande de rendre le contenu du `dashboard` ([/exercises/streaming](http://localhost:3000/exercises/streaming)) non bloquant (comme c’est le cas actuellement).
-
-### Pourquoi est bloquant :
-
-Pour comprendre pourquoi c’est bloquant, il est utile de comprendre le rendu côté serveur (SSR) et ses limites.
-
-Avec le SSR, plusieurs étapes doivent être complétées avant que l'utilisateur puisse voir et interagir avec une page :
-
-- **Récupération des données :** Toutes les données pour une page donnée sont récupérées sur le serveur.
-- **Rendu HTML :** Le serveur génère le HTML pour la page.
-- **Envoi au client :** Le HTML, le CSS et le JavaScript de la page sont envoyés au client.
-- **Affichage initial :** Une interface utilisateur non interactive est affichée à l'aide du HTML et du CSS générés.
-- **Hydratation par React :** Enfin, React hydrate l'interface utilisateur pour la rendre interactive.
-
-![server-rendering-without-streaming-chart.avif](/course/server-rendering-without-streaming-chart.avif)
-Comme le fetching de data serveur et rendrering peut être long Next permet d’avoir un fichier `loading.tsx` au niveau du segment de route, cela permet d’avoir un FCP rapide.
-
-📑 Voir la doc : https://nextjs.org/docs/app/building-your-application/routing/loading-ui-and-streaming
-
-🐶 Dans cet exercice tu vas devoir créer un fichier `loading.tsx` au niveau de la route afin d’afficher un Skeleton le temps que toutes les données soit chargées
+Avec Next JS, tous les composants React **sont considérés comme RSC par défaut.** Pour pouvoir bénéficier des avantages des RCC il faut explicitement les définir comme client avec la directive `'use client'`
 
 ```tsx
-import {Skeleton} from '@/components/ui/skeleton'
-...
-<div className="m-4 mx-auto max-w-4xl p-6 text-lg">
-  <Skeleton className="m-4  h-[325px] rounded-xl" />
-  <div className="m-4 space-y-2">
-    <Skeleton className="h-4" />
-    <Skeleton className="h-4 " />
-  </div>
-</div>
-```
+'use client'
+import { useState } from 'react'
 
-Fichiers
+export default function Counter() {
+  const [count, setCount] = useState(0)
 
-- `src/app/exercises/streaming/loading.tsx`
-
-## Bonus
-
-### 1. 🚀 Amélioration (Streaming avec Suspense)
-
-Avoir un composant de chargement permet de rendre la page non bloquante mais il faut toujours attendre le chargement complet des composants pour avoir l’affichage complet.
-
-- `<ProductList>` —> 2 secondes
-- `<PostList>` —> 5 secondes
-
-Le streaming permet d’avoir accès aux composants directement lorsqu'il sont disponible.
-
-Pour cela il faut les composant dans un `Suspense` exemple :
-
-```tsx
-import { Suspense } from 'react'
-import { PostFeed, Weather } from './Components'
-
-export default function Posts() {
   return (
-    <section>
-      <Suspense fallback={<p>Loading feed...</p>}>
-        <PostFeed />
-      </Suspense>
-      <Suspense fallback={<p>Loading weather...</p>}>
-        <Weather />
-      </Suspense>
-    </section>
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
   )
 }
 ```
 
-📑 Doc Suspense https://react.dev/reference/react/Suspense
+Si le développeur oublie la directive Next va détecter que c’est du code client et va générer une erreur
 
-🐶 Dans cet exercice, utilise `suspense` pour afficher des`squeleton` le temps que les composants soient accessibles
+![use-client-directive.avif](/course/use-client-directive.avif)
 
-Constate que le `loading` n’est plus nécessaire
+📑 Le liens vers la doc [https://nextjs.org/docs/app/building-your-application/rendering/client-components](https://nextjs.org/docs/app/building-your-application/rendering/client-components)
 
-Fichiers
+## Exercice
 
-- `src/app/exercises/streaming/page.tsx`
-
-### 2. 🚀 Streaming et `loading.tsx`
-
-Simule un accès long au données de la page du `dashboard` (ce qui peut arriver si des données sont lentes à charger sur la page principale)
+Commet nous l’avons vu, ajouter du code client sans la directive `‘use client’` génère une erreur. Ici nous avons un RSC (nous ne pouvons donc pas utiliser la directive `‘use client’`) mais nous voulons inclure des composants enfants clients
 
 ```tsx
-const username = 'Mike Codeur'
-await new Promise((resolve) => setTimeout(resolve, 1000))
+//RSC
+export default async function Page() {
+  const posts = await getPosts()
+  return (
+    <div>
+        il y a {posts.length} posts
+    </div>
+  )
 ```
+
+Mais nous voulons utiliser un RCC, un simple composant `<Counter />`
+
+🐶 Ajoute le compteur dans `page.tsx` et adapte le Counter si nécessaire.
 
 Fichiers
 
-- `src/app/exercises/streaming/page.tsx`
+- `/exercises/client-components/page.tsx`
+- `/exercises/client-components/rcc-counter.tsx`
+
+## Bonus
+
+### 1. 🚀 Librairie externe
+
+Nous utilisons souvent des librairies React externes dans nos projets. Par exemple ici nous avons une librairies externe
+
+```tsx
+//npm install
+//car depend de la libriaire react-use
+import ExternalLib from '@/lib/externalClientLib'
+...
+<ExternalLib defaultDelay={100} />
+```
+
+Nous ne pouvons pas ajouter la directive `‘use client’` dessus car il s’agit d’une librairie externe.
+
+- 🐶 Dans un premier temps essaye d’utiliser cette libraire en dessous du compteur dans `page.tsx`
+
+```tsx
+// exercises/client-components/page.tsx
+import ExternalLib from '@/lib/externalClientLib'
+...
+
+<Counter />
+<ExternalLib defaultDelay={100} />
+```
+
+Constate l’erreur
+
+```tsx
+Error: useState only works in Client Components. Add the "use client" directive at the top of the file to use it. Read more: https://nextjs.org/docs/messages/react-client-hook-in-server-component
+```
+
+### Comment faire pour utiliser un RCC externe sans avoir la main sur le code ?
+
+- Solution un Wrapper contenant `‘use client’`
+
+```tsx
+//client-lib-wrapper.tsx
+'use client'
+
+export {default} from '@/lib/externalClientLib'
+// ou
+export * from '@/lib/externalClientLib'
+```
+
+- 🐶 Utilise le wrapper `exercises/client-components/client-lib-wrapper.tsx` au lieu de la librairie
+
+Fichiers
+
+- `/exercises/client-components/page.tsx`
+- `/exercises/client-components/client-lib-wrapper.tsx`
+
+### 2. 🚀 server-only
+
+Nous avons aussi un RCC `<RccFetch>` qui appel un fonction `getData`
+
+```tsx
+import {getData} from './data'
+
+export default function RccFetch() {
+  const promise = useMemo(() => getData(), [])
+  const data: Post[] = use(promise)
+  ...
+```
+
+Un fetch qui contient des données sensible comme un token
+
+```tsx
+export async function getData() {
+  const secretKey = '#######_this_is_a_secret_key_#######'
+  const res = await fetch('https://jsonplaceholder.typicode.com/posts', {
+    headers: {
+      authorization: secretKey,
+    },
+  })
+
+  return res.json()
+}
+```
+
+Il existe un module pour interdire de faire cela : `“server-only”`
+
+```tsx
+import 'server-only'
+```
+
+Ce module va déclencher un erreur en cas d’import de code serveur dans le client
+
+Doc [server-only](https://nextjs.org/docs/app/building-your-application/data-fetching/patterns#using-react-cache-server-only-and-the-preload-pattern)
+
+- 🐶 Utilise server-only dans le fichier data.ts
+
+Fichiers
+
+- `exercises/client-components/data.ts`
+- `/exercises/client-components/page.tsx`
 
 ## Aller plus loin
 
-📑 Le lien vers la doc [https://nextjs.org/docs/app/building-your-application/rendering/server-components#streaming](https://nextjs.org/docs/app/building-your-application/rendering/server-components#streaming)
+📑 Le lien vers la doc [https://www.w3schools.com/html/html_css.asp](https://www.w3schools.com/html/html_css.asp)
 
 ## Ils vont t’aider
 
@@ -138,4 +183,4 @@ Fichiers
 
 ## 🐜 Feedback
 
-Remplir le formulaire le [formulaire de FeedBack](https://go.mikecodeur.com/cours-next-avis?entry.1912869708=Next%20PRO&entry.1430994900=Rendering%20Avancée&entry.533578441=05%20streaming).
+Remplir le formulaire le [formulaire de FeedBack](https://go.mikecodeur.com/cours-next-avis?entry.1912869708=Next%20PRO&entry.1430994900=Rendering%20Avancée&entry.533578441=06%20rcc-external-lib).

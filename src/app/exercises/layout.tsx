@@ -50,6 +50,12 @@ export default function AppLayout({children}: PropsWithChildren) {
               >
                 <span>Streaming</span>
               </Link>
+              <Link
+                className="flex items-center space-x-2 font-bold"
+                href="/exercises/client-components"
+              >
+                <span>RCC</span>
+              </Link>
 
               <div className="hidden items-center space-x-2 md:flex"></div>
             </div>
@@ -77,6 +83,12 @@ export default function AppLayout({children}: PropsWithChildren) {
                 href="/exercises/streaming"
               >
                 Streaming
+              </Link>
+              <Link
+                className="text-sm font-semibold underline sm:hidden"
+                href="/exercises/client-components"
+              >
+                RCC
               </Link>
 
               <ModeToggle />
