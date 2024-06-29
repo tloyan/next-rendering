@@ -44,6 +44,12 @@ export default function AppLayout({children}: PropsWithChildren) {
               >
                 <span>Dynamic-rendering</span>
               </Link>
+              <Link
+                className="flex items-center space-x-2 font-bold"
+                href="/exercises/streaming"
+              >
+                <span>Streaming</span>
+              </Link>
 
               <div className="hidden items-center space-x-2 md:flex"></div>
             </div>
@@ -65,6 +71,12 @@ export default function AppLayout({children}: PropsWithChildren) {
                 href="/exercises/dynamic-rendering"
               >
                 Dynamic-rendering
+              </Link>
+              <Link
+                className="text-sm font-semibold underline sm:hidden"
+                href="/exercises/streaming"
+              >
+                Streaming
               </Link>
 
               <ModeToggle />
