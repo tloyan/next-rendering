@@ -18,7 +18,11 @@ const config = {
         '2xl': '1400px',
       },
     },
+
     extend: {
+      backgroundImage: {
+        'blue-red-gradient': 'linear-gradient(to left, #3b82f6, #ef4444)',
+      },
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans],
       },

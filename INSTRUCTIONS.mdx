@@ -1,6 +1,6 @@
-# Client Component - External Librairy
+# Composition Patterns
 
-### 💡 Comment utiliser des librairies externes (client Component)
+### 💡 Comment composer notre application de RCC et RSC
 
 ## 📝 Tes notes
 
@@ -8,170 +8,217 @@ Detaille ce que tu as appris ici, sur une page [Notion](https://go.mikecodeu
 
 ## Comprendre
 
-Les **React Serveur Components (RSC)** ont de nombreux avantages:
+Avec Next et les React Server Components, Il faut toujours ce poser la question. dois je faire une RCC (Client) ou un RSC (Serveur) et surtout comment organiser son application pour avoir des RCC et RSC qui s’imbriquent correctement.
 
-- **Optimisation du rendu initial :** Ils permettent d'optimiser le rendu initial en évitant de transférer du code JavaScript non utilisé.
-- **Réduction du temps de chargement :** En limitant les transferts de données, ils réduisent le temps de chargement initial des pages.
-- **Meilleure gestion des ressources :** Ils facilitent une meilleure gestion des ressources côté serveur en minimisant le travail répétitif.
-- **Amélioration de la sécurité :** En réduisant l'exposition du code client, ils améliorent la sécurité de l'application.
-- **Meilleure expérience utilisateur :** En permettant un chargement plus rapide et une interface plus réactive, ils améliorent l'expérience globale des utilisateurs.
+**Faire 100% de RCC ?**
 
-**Cependant il ne peuvent pas tout faire :**
+- On perd l’avantage du SSR, de la réduction du bundle client etc …
 
-Nous avons toujours besoins de React Client Component (RCC) pour :
+**Faire 100% de RSC ?**
 
-- **Interactivité :** Les composants côté client peuvent utiliser l'état, les effets et les écouteurs d'événements, ce qui leur permet de fournir un retour immédiat à l'utilisateur et de mettre à jour l'interface utilisateur.
-- **APIs du navigateur :** Les composants côté client ont accès aux APIs du navigateur, comme la `géolocalisation` ou `localStorage`.
+- Impossible, car l’application aurait aucune interactivité
 
-Avec Next JS, tous les composants React **sont considérés comme RSC par défaut.** Pour pouvoir bénéficier des avantages des RCC il faut explicitement les définir comme client avec la directive `'use client'`
+![rcc-rsc](/course/rcc-rsc-usage.png)
+
+📑 Le liens vers la doc https://rc.nextjs.org/docs/app/building-your-application/rendering/composition-patterns#when-to-use-server-and-client-components
+
+Voila a quoi pourrait ressembler un arbre de composants pour notre segment de route.
+
+- Des RSC qui contiennent des RCC
+- Des RCC qui contiennent des RSC
+
+![rcc-rsc-tree.png](/course/rcc-rsc-tree.png)
+
+Mais il y a certaines conditions a respecter.
+
+- Les RSC peuvent contenir des RCC sans contraintes (par `import` ou `props`)
+- Les RCC peuvent contenir des RSC (via `props` : `children` ou autres`props`)
+
+Exemple :
+
+- Il est interdit d’importer des RCC dans des RCC
 
 ```tsx
+//app/client-component.tsx
 'use client'
-import { useState } from 'react'
 
-export default function Counter() {
+// You cannot import a Server Component into a Client Component.
+import ServerComponent from './Server-Component'
+
+export default function ClientComponent({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   const [count, setCount] = useState(0)
 
   return (
-    <div>
-      <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>Click me</button>
-    </div>
+    <>
+      <button onClick={() => setCount(count + 1)}>{count}</button>
+      <ServerComponent />
+    </>
   )
 }
 ```
 
-Si le développeur oublie la directive Next va détecter que c’est du code client et va générer une erreur
+- Solution de contournement (`props children`)
 
-![use-client-directive.avif](/course/use-client-directive.avif)
+```tsx
+//app/client-component.tsx
+'use client'
 
-📑 Le liens vers la doc [https://nextjs.org/docs/app/building-your-application/rendering/client-components](https://nextjs.org/docs/app/building-your-application/rendering/client-components)
+import { useState } from 'react'
+
+export default function ClientComponent({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  const [count, setCount] = useState(0)
+
+  return (
+    <>
+      <button onClick={() => setCount(count + 1)}>{count}</button>
+      {children}
+    </>
+  )
+}
+```
+
+```tsx
+import ClientComponent from './client-component'
+import ServerComponent from './server-component'
+
+// Pages in Next.js are Server Components by default
+export default function Page() {
+  return (
+    <ClientComponent>
+      <ServerComponent />
+    </ClientComponent>
+  )
+}
+```
+
+![rcc-rsc-tree.png](/course/rcc-rsc-tree-prop.png)
+
+📑 Le lien vers la doc [https://rc.nextjs.org/docs/app/building-your-application/rendering/composition-patterns#interleaving-server-and-client-components](https://rc.nextjs.org/docs/app/building-your-application/rendering/composition-patterns#interleaving-server-and-client-components)
+
+Pour les exercices nous utiliserons un composant qui détecte le type du composant (en se basant sur la présence de window) et affiche une couleur
+
+```tsx
+const actualType = detectActualType()
+//server ou client
+export function detectActualType() {
+  return typeof window === 'undefined'
+    ? ComponentTypeEnum.SERVER
+    : ComponentTypeEnum.CLIENT
+}
+```
+
+- Rouge —> Client
+- Bleu —> Serveur
+
+![rcc-rsc-tree.png](/course/component-tree.png)
 
 ## Exercice
 
-Commet nous l’avons vu, ajouter du code client sans la directive `‘use client’` génère une erreur. Ici nous avons un RSC (nous ne pouvons donc pas utiliser la directive `‘use client’`) mais nous voulons inclure des composants enfants clients
+Dans cet exercice nous allons essayer plusieurs combinaisons possibles
 
-```tsx
-//RSC
-export default async function Page() {
-  const posts = await getPosts()
-  return (
-    <div>
-        il y a {posts.length} posts
-    </div>
-  )
-```
+- Client → Server (`children`)
+- Server → Client (`children`)
+- Server contenant un Client (`import`)
+- Client contenant un Serveur (`import`)
 
-Mais nous voulons utiliser un RCC, un simple composant `<Counter />`
+Pour nous aider il existe des composants :
 
-🐶 Ajoute le compteur dans `page.tsx` et adapte le Counter si nécessaire.
+- `server.tsx :` Le composant `<Server>` contenant `‘use server’`
+- `client.tsx` : Le composant `<Client>` contenant `‘use client’`
+- `clientWithServer.tsx` : Composant client qui importe un `<Server>`
+- `servertWithClient.tsx` : Composant server qui importe un `<Client>`
+
+Fichiers qu’il nous suffira d’importer et utiliser dans `page.tsx`
+
+<aside>
+💡 *ps : `<ClientWithServer />` risque de poser problème ce qui est normal un RCC ne peut pas importer un RSC*
+
+</aside>
 
 Fichiers
 
-- `/exercises/client-components/page.tsx`
-- `/exercises/client-components/rcc-counter.tsx`
+- `exercise/composition/page.tsx`
 
 ## Bonus
 
-### 1. 🚀 Librairie externe
+### 1. 🚀 RCIC (React Contextual Isomorphic Component)
 
-Nous utilisons souvent des librairies React externes dans nos projets. Par exemple ici nous avons une librairies externe
+Les RCIC ne sont pas nommés explicitement comme cela dans la documentation de Next.js. J’ai défini ce terme explicitement pour décrire un type particulier de composants React dans Next.js.
 
-```tsx
-//npm install
-//car depend de la libriaire react-use
-import ExternalLib from '@/lib/externalClientLib'
-...
-<ExternalLib defaultDelay={100} />
-```
+- **React Component** : Ce sont des composants React classiques.
+- **Isomorphic** : Ils peuvent s'exécuter côté `Client` ou côté `Server`, selon le contexte.
+  - **Sans interactivité client** : Pas d'utilisation de hooks ou d'événements spécifiques au client.
+  - **Sans opérations serveur** : Pas d'opérations d'entrée/sortie (IO) ou d'accès aux ressources serveur directes.
+- **Contextual** : Leur type (client ou serveur) dépend du contexte dans lequel ils sont inclus (importés).
+  - Lorsqu'ils sont inclus (importés) dans un composant client, ils adoptent le comportement du client.
+  - Lorsqu'ils sont inclus (importés) dans un composant serveur, ils adoptent le comportement du serveur.
+  - Lorsqu'ils sont passés en tant que `children` à un composant (client ou serveur), ils sont serveur par défaut.
 
-Nous ne pouvons pas ajouter la directive `‘use client’` dessus car il s’agit d’une librairie externe.
+Dans notre arbre de composant, à partir du moment ou un composant devient explicitement client `‘use client’` les RCIC enfant importés seront des `clients`. Ce qui alourdie le bundle et peut rendre l’hydration plus longue. Voilà pourquoi il est recommandé :
 
-- 🐶 Dans un premier temps essaye d’utiliser cette libraire en dessous du compteur dans `page.tsx`
+<aside>
+💡 Descendre les RCC le plus bas possible dans l’arbre de composant
 
-```tsx
-// exercises/client-components/page.tsx
-import ExternalLib from '@/lib/externalClientLib'
-...
+</aside>
 
-<Counter />
-<ExternalLib defaultDelay={100} />
-```
+Exemple de composition identique . La seule différence est le parent
 
-Constate l’erreur
+![rcc-rsc-tree.png](/course/compo-iso-tree.png)
 
-```tsx
-Error: useState only works in Client Components. Add the "use client" directive at the top of the file to use it. Read more: https://nextjs.org/docs/messages/react-client-hook-in-server-component
-```
+- 🐶 Dans cet exercice nous avons un RSC (`server.tsx` `<Server>`) mais qui ne contient pas de code spécifique au client (FS par exemple) ou de code client (Hook, Localstorage par exemple)
 
-### Comment faire pour utiliser un RCC externe sans avoir la main sur le code ?
+**Il est donc candidat pour être un RCIC**
 
-- Solution un Wrapper contenant `‘use client’`
+- 🐶 Transforme le en RCIC (`server.tsx`)
+  - **⛏️ Supprime la directive** `use server`
+  - **🤖 Change son type pour l’afficher correctement :** ``
+**🤖**`componentType={ComponentTypeEnum.ISOMORPHIC}`
 
 ```tsx
-//client-lib-wrapper.tsx
-'use client'
+//server.tsx
+'use server'
+import React from 'react'
+import {CardComponentType} from '@/components/card-component-type'
+import {ComponentTypeEnum, detectActualType} from '@/lib/helper'
 
-export {default} from '@/lib/externalClientLib'
-// ou
-export * from '@/lib/externalClientLib'
-```
-
-- 🐶 Utilise le wrapper `exercises/client-components/client-lib-wrapper.tsx` au lieu de la librairie
-
-Fichiers
-
-- `/exercises/client-components/page.tsx`
-- `/exercises/client-components/client-lib-wrapper.tsx`
-
-### 2. 🚀 server-only
-
-Nous avons aussi un RCC `<RccFetch>` qui appel un fonction `getData`
-
-```tsx
-import {getData} from './data'
-
-export default function RccFetch() {
-  const promise = useMemo(() => getData(), [])
-  const data: Post[] = use(promise)
-  ...
-```
-
-Un fetch qui contient des données sensible comme un token
-
-```tsx
-export async function getData() {
-  const secretKey = '#######_this_is_a_secret_key_#######'
-  const res = await fetch('https://jsonplaceholder.typicode.com/posts', {
-    headers: {
-      authorization: secretKey,
-    },
-  })
-
-  return res.json()
+export default async function Server({children}: {children?: React.ReactNode}) {
+  const actualType = detectActualType()
+  return (
+    <CardComponentType
+      componentType={ComponentTypeEnum.SERVER}
+      actualType={actualType}
+    >
+      {children}
+    </CardComponentType>
+  )
 }
+
 ```
 
-Il existe un module pour interdire de faire cela : `“server-only”`
+- 🐶 Utilise le dans `page.tsx`
 
 ```tsx
-import 'server-only'
+<ClientWithServer />
 ```
-
-Ce module va déclencher un erreur en cas d’import de code serveur dans le client
-
-Doc [server-only](https://nextjs.org/docs/app/building-your-application/data-fetching/patterns#using-react-cache-server-only-and-the-preload-pattern)
-
-- 🐶 Utilise server-only dans le fichier data.ts
 
 Fichiers
 
-- `exercises/client-components/data.ts`
-- `/exercises/client-components/page.tsx`
+- `exercise/composition/server.tsx`
+- `exercise/composition/page.tsx`
+
+###
 
 ## Aller plus loin
 
-📑 Le lien vers la doc [https://www.w3schools.com/html/html_css.asp](https://www.w3schools.com/html/html_css.asp)
+📑 Le lien vers la doc [https://rc.nextjs.org/docs/app/building-your-application/rendering/composition-patterns#interleaving-server-and-client-components](https://rc.nextjs.org/docs/app/building-your-application/rendering/composition-patterns#interleaving-server-and-client-components)
 
 ## Ils vont t’aider
 
@@ -183,4 +230,4 @@ Fichiers
 
 ## 🐜 Feedback
 
-Remplir le formulaire le [formulaire de FeedBack](https://go.mikecodeur.com/cours-next-avis?entry.1912869708=Next%20PRO&entry.1430994900=Rendering%20Avancée&entry.533578441=06%20rcc-external-lib).
+Remplir le formulaire le [formulaire de FeedBack](https://go.mikecodeur.com/cours-next-avis?entry.1912869708=Next%20PRO&entry.1430994900=Rendering%20Avancée&entry.533578441=01%20composition-patterns).

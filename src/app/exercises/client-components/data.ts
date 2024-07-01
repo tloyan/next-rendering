@@ -1,4 +1,11 @@
-export * from './data.exercise'
+//import 'server-only'
+export async function getData() {
+  const secretKey = '#######_this_is_a_secret_key_#######'
+  const res = await fetch('https://jsonplaceholder.typicode.com/posts', {
+    headers: {
+      authorization: secretKey,
+    },
+  })
 
-//2. 🚀 server-only
-//export * from './data.bonus-2'
+  return res.json()
+}
