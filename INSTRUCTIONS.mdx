@@ -1,6 +1,6 @@
-# Composition Patterns
+# Comprendre l’hydratation
 
-### 💡 Comment composer notre application de RCC et RSC
+### 💡 Comprendre l’hydratation et gérer les Errors/Warning
 
 ## 📝 Tes notes
 
@@ -8,217 +8,149 @@ Detaille ce que tu as appris ici, sur une page [Notion](https://go.mikecodeu
 
 ## Comprendre
 
-Avec Next et les React Server Components, Il faut toujours ce poser la question. dois je faire une RCC (Client) ou un RSC (Serveur) et surtout comment organiser son application pour avoir des RCC et RSC qui s’imbriquent correctement.
+Dans les modules précèdent nous avons vu
 
-**Faire 100% de RCC ?**
+- Le rendu coté server (SSR) avec les React Server Components.
+- Le rendu coté client (CSR) avec les React Client Components.
 
-- On perd l’avantage du SSR, de la réduction du bundle client etc …
+Nous allons aller plus en profondeur sur la manière dont Next gère tout cela. Rappel sur le SSR
 
-**Faire 100% de RSC ?**
+- Tout d'abord, toutes les données pour une page donnée sont récupérées sur le serveur.
+- Ensuite, le serveur rend le HTML pour la page.
+- Le HTML, le CSS et le JavaScript de la page sont envoyés au client.
+- Une interface utilisateur non interactive est affichée en utilisant le HTML et le CSS générés.
+- Enfin, React **hydrate** l'interface utilisateur pour la rendre interactive.
 
-- Impossible, car l’application aurait aucune interactivité
+![img](/course/server-rendering-without-streaming-chart.avif)
 
-![rcc-rsc](/course/rcc-rsc-usage.png)
+📑 Le liens vers la doc [https://rc.nextjs.org/docs/app/building-your-application/routing/loading-ui-and-streaming#what-is-streaming](https://rc.nextjs.org/docs/app/building-your-application/routing/loading-ui-and-streaming#what-is-streaming)
 
-📑 Le liens vers la doc https://rc.nextjs.org/docs/app/building-your-application/rendering/composition-patterns#when-to-use-server-and-client-components
+On pourrait croire que le processus `SSR` ne concerne que les composants server (RSC). Par exemple dans cet arbre de composant, on pourrait penser que le rendu SSR concerne les RSC et le rendu des RCC se fait uniquement du coté client (`CSR`).
 
-Voila a quoi pourrait ressembler un arbre de composants pour notre segment de route.
+![img](/course/rcc-rsc-tree.png)
 
-- Des RSC qui contiennent des RCC
-- Des RCC qui contiennent des RSC
+En réalité le SSR concerne tout l’arbre de composants. RSC et RCC compris. Les RCC sont donc rendus 2 fois.
 
-![rcc-rsc-tree.png](/course/rcc-rsc-tree.png)
-
-Mais il y a certaines conditions a respecter.
-
-- Les RSC peuvent contenir des RCC sans contraintes (par `import` ou `props`)
-- Les RCC peuvent contenir des RSC (via `props` : `children` ou autres`props`)
-
-Exemple :
-
-- Il est interdit d’importer des RCC dans des RCC
+Par exemple, ce RCC est rendu **une fois sur le server** sans code client (interaction client etc …) Par exemple ce composant est rendu
 
 ```tsx
-//app/client-component.tsx
-'use client'
-
-// You cannot import a Server Component into a Client Component.
-import ServerComponent from './Server-Component'
-
-export default function ClientComponent({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <button onClick={() => setCount(count + 1)}>{count}</button>
-      <ServerComponent />
-    </>
+export default function ClientComponent() {
+	const handleClick = () => {alert('Hi')}
+	return (
+    <button onClick={handleClick}>Click here</button>
   )
 }
 ```
 
-- Solution de contournement (`props children`)
+Devient SSR
 
 ```tsx
-//app/client-component.tsx
-'use client'
+<button>Click here</button>
+```
 
-import { useState } from 'react'
+**Et un rendu ensuite sur le client avec hydration (ajout des events et code)**
 
-export default function ClientComponent({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  const [count, setCount] = useState(0)
+```tsx
+//handleClick est contenu dans le bundle/chunk.js
+<button onClick={handleClick}>Click here</button>
+```
 
-  return (
-    <>
-      <button onClick={() => setCount(count + 1)}>{count}</button>
-      {children}
-    </>
+On a déjà vu plusieurs fois les bénéfice de ce type de découpage. Mais il faut bien prendre en compte que 2 rendus distinct sont fait. Et pour pouvoir hydrater correctement les contenus doivent être cohérent et identiques. Si le contenu rendu sur le server, diffère du contenu rendu sur le client, des warnings et erreurs sont lévés. Prenons l’exemple suivant :
+
+```tsx
+export default function ClientComponent() {
+	const date = new Date().toString()
+	return (
+    <div>
+      {date}
+    </div>
   )
 }
+// SSR date : Tue Jul 02 2024 14:18:53 GMT+0800
+// Le rendu client arrive après
+// CSR date : Tue Jul 02 2024 14:18:54 GMT+0800
 ```
+
+Next va alors lever une errors
 
 ```tsx
-import ClientComponent from './client-component'
-import ServerComponent from './server-component'
+Unhandled Runtime Error
+Error: Text content does not match server-rendered HTML.
+See more info here: https://nextjs.org/docs/messages/react-hydration-error
 
-// Pages in Next.js are Server Components by default
-export default function Page() {
-  return (
-    <ClientComponent>
-      <ServerComponent />
-    </ClientComponent>
-  )
-}
+Text content did not match. Server: "Tue Jul 02 2024 14:27:43 GMT+0800 (Singapore Standard Time)" Client: "Tue Jul 02 2024 14:27:44 GMT+0800 (heure de Singapour)"
+
+En production :
+Error: Minified React error #425
 ```
-
-![rcc-rsc-tree.png](/course/rcc-rsc-tree-prop.png)
-
-📑 Le lien vers la doc [https://rc.nextjs.org/docs/app/building-your-application/rendering/composition-patterns#interleaving-server-and-client-components](https://rc.nextjs.org/docs/app/building-your-application/rendering/composition-patterns#interleaving-server-and-client-components)
-
-Pour les exercices nous utiliserons un composant qui détecte le type du composant (en se basant sur la présence de window) et affiche une couleur
-
-```tsx
-const actualType = detectActualType()
-//server ou client
-export function detectActualType() {
-  return typeof window === 'undefined'
-    ? ComponentTypeEnum.SERVER
-    : ComponentTypeEnum.CLIENT
-}
-```
-
-- Rouge —> Client
-- Bleu —> Serveur
-
-![rcc-rsc-tree.png](/course/component-tree.png)
 
 ## Exercice
 
-Dans cet exercice nous allons essayer plusieurs combinaisons possibles
+**🐶** Dans cet exercice tu vas devoir corriger les erreurs et warnings liés à l’hydratation.
 
-- Client → Server (`children`)
-- Server → Client (`children`)
-- Server contenant un Client (`import`)
-- Client contenant un Serveur (`import`)
-
-Pour nous aider il existe des composants :
-
-- `server.tsx :` Le composant `<Server>` contenant `‘use server’`
-- `client.tsx` : Le composant `<Client>` contenant `‘use client’`
-- `clientWithServer.tsx` : Composant client qui importe un `<Server>`
-- `servertWithClient.tsx` : Composant server qui importe un `<Client>`
-
-Fichiers qu’il nous suffira d’importer et utiliser dans `page.tsx`
+- Errors :
+  - Imbrication div dans `<p>`
+  - Pour la `date`, split supprime le temps (HH MM SS)
+- Warning
+  - Utilise `suppressHydrationWarning` dans un élément html
+    - Doc : https://nextjs.org/docs/messages/react-hydration-error#solution-3-using-suppresshydrationwarning
 
 <aside>
-💡 *ps : `<ClientWithServer />` risque de poser problème ce qui est normal un RCC ne peut pas importer un RSC*
+💡 Rafraichie la page (F5) et navigue pour voir la différence de comportement
 
 </aside>
 
 Fichiers
 
-- `exercise/composition/page.tsx`
+- `exercises/hydration/client-component.tsx`
 
 ## Bonus
 
-### 1. 🚀 RCIC (React Contextual Isomorphic Component)
+### 1. 🚀 render après hydration
 
-Les RCIC ne sont pas nommés explicitement comme cela dans la documentation de Next.js. J’ai défini ce terme explicitement pour décrire un type particulier de composants React dans Next.js.
+Dans l’exercice précédent nous avons corrigé les erreurs d’hydrations mais les comportements ne sont pas ceux que nous souhaitons.
 
-- **React Component** : Ce sont des composants React classiques.
-- **Isomorphic** : Ils peuvent s'exécuter côté `Client` ou côté `Server`, selon le contexte.
-  - **Sans interactivité client** : Pas d'utilisation de hooks ou d'événements spécifiques au client.
-  - **Sans opérations serveur** : Pas d'opérations d'entrée/sortie (IO) ou d'accès aux ressources serveur directes.
-- **Contextual** : Leur type (client ou serveur) dépend du contexte dans lequel ils sont inclus (importés).
-  - Lorsqu'ils sont inclus (importés) dans un composant client, ils adoptent le comportement du client.
-  - Lorsqu'ils sont inclus (importés) dans un composant serveur, ils adoptent le comportement du serveur.
-  - Lorsqu'ils sont passés en tant que `children` à un composant (client ou serveur), ils sont serveur par défaut.
+- La Date a du être tronquée (or nous voulons afficher une vrai `date and time`)
+- Le rendu est bleu (serveur) or il devrait être rouge (client)
 
-Dans notre arbre de composant, à partir du moment ou un composant devient explicitement client `‘use client’` les RCIC enfant importés seront des `clients`. Ce qui alourdie le bundle et peut rendre l’hydration plus longue. Voilà pourquoi il est recommandé :
-
-<aside>
-💡 Descendre les RCC le plus bas possible dans l’arbre de composant
-
-</aside>
-
-Exemple de composition identique . La seule différence est le parent
-
-![rcc-rsc-tree.png](/course/compo-iso-tree.png)
-
-- 🐶 Dans cet exercice nous avons un RSC (`server.tsx` `<Server>`) mais qui ne contient pas de code spécifique au client (FS par exemple) ou de code client (Hook, Localstorage par exemple)
-
-**Il est donc candidat pour être un RCIC**
-
-- 🐶 Transforme le en RCIC (`server.tsx`)
-  - **⛏️ Supprime la directive** `use server`
-  - **🤖 Change son type pour l’afficher correctement :** ``
-**🤖**`componentType={ComponentTypeEnum.ISOMORPHIC}`
+Il manque une dernière étape (si le rendu client diffère du serveur), il manque un rendering. Il faut garder ce schéma en tête
 
 ```tsx
-//server.tsx
-'use server'
-import React from 'react'
-import {CardComponentType} from '@/components/card-component-type'
-import {ComponentTypeEnum, detectActualType} from '@/lib/helper'
-
-export default async function Server({children}: {children?: React.ReactNode}) {
-  const actualType = detectActualType()
-  return (
-    <CardComponentType
-      componentType={ComponentTypeEnum.SERVER}
-      actualType={actualType}
-    >
-      {children}
-    </CardComponentType>
-  )
-}
-
+SSR -> Client Loading -> Hydration -> CSR (useEffect)
+// utilise le composant <Phases> pour logger les differentes phases
 ```
 
-- 🐶 Utilise le dans `page.tsx`
+Pour effectuer un rendu supplémentaire ET qui ne pose pas de problème de d’hydratation il est possible d’utiliser
 
 ```tsx
-<ClientWithServer />
+const [hydrated, setHydrated] = useState(false)
+...
+useEffect(() => {
+  setHydrated(true)
+}, [])
+
+ return <div>{hydrated? 'This is never prerendered' : 'Prerendered'}</div>
 ```
+
+### Explication
+
+- Lors du SSR `hydrated` est `false`
+- Lors de l’hydratation `hydrated` est toujours à `false` (pas d’erreur)
+- Après hydratation nous utilisons `useEffect` pour effectuer `en re-render`
+
+🐶 Utilise cet technique pour afficher correctement la Date et le Style (blue/Red) en te basant sur `hydrated`.
+
+- Remet : **🤖**`const date = new Date().toString()`
+
+ps : tu peux supprimer `suppressHydrationWarning` car il ne devrait pas y avoir de warning sur le style
 
 Fichiers
 
-- `exercise/composition/server.tsx`
-- `exercise/composition/page.tsx`
-
-###
+- `exercises/hydration/client-component.tsx`
 
 ## Aller plus loin
 
-📑 Le lien vers la doc [https://rc.nextjs.org/docs/app/building-your-application/rendering/composition-patterns#interleaving-server-and-client-components](https://rc.nextjs.org/docs/app/building-your-application/rendering/composition-patterns#interleaving-server-and-client-components)
+📑 Le lien vers la doc [https://nextjs.org/docs/messages/react-hydration-error](https://nextjs.org/docs/messages/react-hydration-error)
 
 ## Ils vont t’aider
 
@@ -230,4 +162,4 @@ Fichiers
 
 ## 🐜 Feedback
 
-Remplir le formulaire le [formulaire de FeedBack](https://go.mikecodeur.com/cours-next-avis?entry.1912869708=Next%20PRO&entry.1430994900=Rendering%20Avancée&entry.533578441=01%20composition-patterns).
+Remplir le formulaire le [formulaire de FeedBack](https://go.mikecodeur.com/cours-next-avis?entry.1912869708=Next%20PRO&entry.1430994900=Rendering%20Avancée&entry.533578441=08%20hydration).

@@ -1,3 +1,17 @@
-export {default} from './server.exercise'
+//'use server'
+import React from 'react'
+import {CardComponentType} from '@/components/card-component-type'
+import {ComponentTypeEnum, detectActualType} from '@/lib/helper'
 
-//export {default} from './server.bonus-1'
+export default async function Server({children}: {children?: React.ReactNode}) {
+  await new Promise((resolve) => setTimeout(resolve, 100))
+  const actualType = detectActualType()
+  return (
+    <CardComponentType
+      componentType={ComponentTypeEnum.ISOMORPHIC}
+      actualType={actualType}
+    >
+      {children}
+    </CardComponentType>
+  )
+}

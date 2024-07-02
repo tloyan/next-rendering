@@ -62,6 +62,12 @@ export default function AppLayout({children}: PropsWithChildren) {
               >
                 <span>Composition</span>
               </Link>
+              <Link
+                className="flex items-center space-x-2 font-bold"
+                href="/exercises/hydration"
+              >
+                <span>Hydration</span>
+              </Link>
 
               <div className="hidden items-center space-x-2 md:flex"></div>
             </div>
@@ -101,6 +107,12 @@ export default function AppLayout({children}: PropsWithChildren) {
                 href="/exercises/composition"
               >
                 Composition
+              </Link>
+              <Link
+                className="text-sm font-semibold underline sm:hidden"
+                href="/exercises/hydration"
+              >
+                Hydration
               </Link>
 
               <ModeToggle />

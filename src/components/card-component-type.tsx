@@ -32,6 +32,7 @@ export function CardComponentType({
         </CardTitle>
       </CardHeader>
       <CardContent>
+        Type de composant {actualType}
         {children}
         {/* {otherComponent} */}
       </CardContent>
