@@ -1,3 +1,3 @@
-//export {default} from './server.exercise'
+export {default} from './server.exercise'
 
-export {default} from './server.bonus-1'
+//export {default} from './server.bonus-1'
