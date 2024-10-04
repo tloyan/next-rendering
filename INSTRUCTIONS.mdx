@@ -1,10 +1,10 @@
 # Streaming (Loading et Skeleton)
 
-### 💡 Comprendre le Streaming
+### 💡 Comprendre le Streaming (Loading et Skeleton)
 
 ## 📝 Tes notes
 
-Detaille ce que tu as appris ici, sur une page [Notion](https://go.mikecodeur.com/course-notes-template)
+Détaille ce que tu as appris ici, sur une page [Notion](https://go.mikecodeur.com/course-notes-template)
 
 ## Comprendre
 
@@ -12,47 +12,66 @@ Dans ce module, nous abordons le rendu streaming, une technique qui permet de re
 
 Cette approche découpe le travail en segments, les diffusant au client dès qu'ils sont prêts. Ainsi, l'utilisateur peut visualiser des parties de la page immédiatement, même si tout le contenu n'est pas encore complètement rendu.
 
-Le streaming intégré au routeur d'application de Next.js améliore la performance de chargement initial des pages et facilite l'affichage d'interfaces dépendant de récupérations de données lentes.
+Le streaming intégré au routeur d'application de `Next.js` améliore la performance de chargement initial des pages et facilite l'affichage d'interfaces dépendant de récupérations de données lentes.
 
-Séquentiel vs Paralell :
+`Sequential` vs `Paralell` :
+
+[sequential-parallel-data-fetching.avif](/course/sequential-parallel-data-fetching.avif)
+
+```tsx
 ![server-rendering-without-streaming-chart.avif](/course/sequential-parallel-data-fetching.avif)
+```
 
 Partiel content
-![server-rendering-without-streaming-chart.avif](/course/server-rendering-with-streaming.avif)
 
-📑 Le liens vers la doc [https://nextjs.org/docs/app/building-your-application/rendering/server-components#streaming](https://nextjs.org/docs/app/building-your-application/rendering/server-components#streaming)
+[server-rendering-with-streaming.avif](/course/server-rendering-with-streaming.avif)
+
+```tsx
+![server-rendering-without-streaming-chart.avif](/course/server-rendering-with-streaming.avif)
+```
+
+📑 Le lien vers la doc [https://nextjs.org/docs/app/building-your-application/rendering/server-components#streaming](https://nextjs.org/docs/app/building-your-application/rendering/server-components#streaming)
 
 ## Exercice
 
-Dans cet exercice nous avons des composants (RSC) qui sont long à charger (plusieurs secondes).
+Dans cet exercice, nous avons des composants (`RSC`) qui sont longs à charger (plusieurs secondes).
 
 - `<ProductList>` —> 2 secondes
 - `<PostList>` —> 5 secondes
 
-Ces composants sont chargés dans un Dashboard sur le segment de route : [/exercises/streaming](http://localhost:3000/exercises/streaming)
+Ces composants sont chargés dans un `Dashboard` sur le segment de route : [/exercises/streaming](http://localhost:3000/exercises/streaming)
 
 ![streaming-exca.png](/course/streaming-exca.png)
 
-**👨‍✈️ Hugo le chef de projet** demande de rendre le contenu du `dashboard` ([/exercises/streaming](http://localhost:3000/exercises/streaming)) non bloquant (comme c’est le cas actuellement).
+```tsx
+[image](</course/streaming-exca.png>)
+```
+
+**👨‍✈️ Hugo, le chef de projet,** demande de rendre le contenu du `dashboard` ([/exercises/streaming](http://localhost:3000/exercises/streaming)) non bloquant (comme c’est le cas actuellement).
 
 ### Pourquoi est bloquant :
 
-Pour comprendre pourquoi c’est bloquant, il est utile de comprendre le rendu côté serveur (SSR) et ses limites.
+Pour comprendre pourquoi c’est bloquant, il est utile de comprendre le rendu côté serveur (`SSR`) et ses limites.
 
-Avec le SSR, plusieurs étapes doivent être complétées avant que l'utilisateur puisse voir et interagir avec une page :
+Avec le `SSR`, plusieurs étapes doivent être complétées avant que l'utilisateur puisse voir et interagir avec une page :
 
 - **Récupération des données :** Toutes les données pour une page donnée sont récupérées sur le serveur.
-- **Rendu HTML :** Le serveur génère le HTML pour la page.
-- **Envoi au client :** Le HTML, le CSS et le JavaScript de la page sont envoyés au client.
-- **Affichage initial :** Une interface utilisateur non interactive est affichée à l'aide du HTML et du CSS générés.
-- **Hydratation par React :** Enfin, React hydrate l'interface utilisateur pour la rendre interactive.
+- **Rendu HTML :** Le serveur génère le `HTML` pour la page.
+- **Envoi au client :** Le `HTML`, le `CSS` et le `JavaScript` de la page sont envoyés au client.
+- **Affichage initial :** Une interface utilisateur non interactive est affichée à l'aide du `HTML` et du `CSS` générés.
+- **Hydratation par `React` :** Enfin, `React` hydrate l'interface utilisateur pour la rendre interactive.
 
+[server-rendering-without-streaming-chart.avif](/course/server-rendering-without-streaming-chart.avif)
+
+```tsx
 ![server-rendering-without-streaming-chart.avif](/course/server-rendering-without-streaming-chart.avif)
-Comme le fetching de data serveur et rendrering peut être long Next permet d’avoir un fichier `loading.tsx` au niveau du segment de route, cela permet d’avoir un FCP rapide.
+```
+
+Comme le `fetching` de data serveur et `rendrering` peut être long, `Next` permet d’avoir un fichier `loading.tsx` au niveau du segment de route, cela permet d’avoir un `FCP` rapide.
 
 📑 Voir la doc : https://nextjs.org/docs/app/building-your-application/routing/loading-ui-and-streaming
 
-🐶 Dans cet exercice tu vas devoir créer un fichier `loading.tsx` au niveau de la route afin d’afficher un Skeleton le temps que toutes les données soit chargées
+🐶 Dans cet exercice, tu vas devoir créer un fichier `loading.tsx` au niveau de la route afin d’afficher un `Skeleton` le temps que toutes les données soient chargées
 
 ```tsx
 import {Skeleton} from '@/components/ui/skeleton'
@@ -74,18 +93,18 @@ Fichiers
 
 ### 1. 🚀 Amélioration (Streaming avec Suspense)
 
-Avoir un composant de chargement permet de rendre la page non bloquante mais il faut toujours attendre le chargement complet des composants pour avoir l’affichage complet.
+Avoir un composant de chargement permet de rendre la page non bloquante, mais il faut toujours attendre le chargement complet des composants pour avoir l’affichage complet.
 
 - `<ProductList>` —> 2 secondes
 - `<PostList>` —> 5 secondes
 
-Le streaming permet d’avoir accès aux composants directement lorsqu'il sont disponible.
+Le streaming permet d’avoir accès aux composants directement lorsqu'ils sont disponibles.
 
 Pour cela il faut les composant dans un `Suspense` exemple :
 
 ```tsx
-import { Suspense } from 'react'
-import { PostFeed, Weather } from './Components'
+import {Suspense} from 'react'
+import {PostFeed, Weather} from './Components'
 
 export default function Posts() {
   return (
@@ -103,7 +122,7 @@ export default function Posts() {
 
 📑 Doc Suspense https://react.dev/reference/react/Suspense
 
-🐶 Dans cet exercice, utilise `suspense` pour afficher des`squeleton` le temps que les composants soient accessibles
+🐶 Dans cet exercice, utilise `suspense` pour afficher des `squeleton` le temps que les composants soient accessibles.
 
 Constate que le `loading` n’est plus nécessaire
 
@@ -113,7 +132,7 @@ Fichiers
 
 ### 2. 🚀 Streaming et `loading.tsx`
 
-Simule un accès long au données de la page du `dashboard` (ce qui peut arriver si des données sont lentes à charger sur la page principale)
+Simule un accès long aux données de la page du `dashboard` (ce qui peut arriver si des données sont lentes à charger sur la page principale)
 
 ```tsx
 const username = 'Mike Codeur'
@@ -138,4 +157,4 @@ Fichiers
 
 ## 🐜 Feedback
 
-Remplir le formulaire le [formulaire de FeedBack](https://go.mikecodeur.com/cours-next-avis?entry.1912869708=Next%20PRO&entry.1430994900=Rendering%20Avancée&entry.533578441=05%20streaming).
+Remplir le formulaire le [formulaire de FeedBack](https://go.mikecodeur.com/cours-next-avis?entry.1912869708=Next%20PRO&entry.1430994900=04%20Rendering%20Avancée&entry.533578441=05%20streaming).

@@ -1,6 +1,6 @@
-// 🐶 importe 'Suspense' de React
+// 🐶 Importe `Suspense` de `React`
 
-// 🐶 importe les Skeletons
+// 🐶 Importe les `Skeletons`
 // import {SkeletonCardList} from '@/components/skeleton-card-list'
 // import {SkeletonPostList} from '@/components/skeleton-post-list'
 import {ProductList} from './product-list'
@@ -28,13 +28,13 @@ const Page = async () => {
       <div className="mx-auto max-w-4xl p-6 text-lg">
         <h2 className="mb-4 text-center text-3xl font-bold">Products</h2>
         {/* 🐶 Utilise <Suspense> pour affichier <ProductList />   */}
-        {/* Affiche 'SkeletonCardList' pendant le chargement  */}
+        {/* Affiche `SkeletonCardList` pendant le chargement  */}
         {/* 📑Suspense https://react.dev/reference/react/Suspense */}
         <ProductList />
         <Separator className="my-4" />
         <h2 className="mb-4 text-center text-3xl font-bold">Posts</h2>
         {/* 🐶 Utilise <Suspense> pour affichier <PostList />   */}
-        {/* Affiche 'SkeletonPostList' pendant le chargement  */}
+        {/* Affiche `SkeletonPostList` pendant le chargement  */}
         {/* 📑Suspense https://react.dev/reference/react/Suspense */}
         <PostList />
         <RenderTime name="streaming page" />
