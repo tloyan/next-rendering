@@ -3,6 +3,7 @@ import Link from 'next/link'
 import {PropsWithChildren} from 'react'
 
 import {ModeToggle} from '@/components/theme-toggle'
+import {moduleName} from '@/lib/constante'
 
 import RenderTime from '@/components/render-time'
 
@@ -114,7 +115,12 @@ export default function AppLayout({children}: PropsWithChildren) {
               >
                 Hydration
               </Link>
-
+              <Link
+                className="flex items-center space-x-2 font-medium"
+                href="/exercises"
+              >
+                <span>Profile</span>
+              </Link>
               <ModeToggle />
             </div>
           </nav>
@@ -125,8 +131,8 @@ export default function AppLayout({children}: PropsWithChildren) {
       <footer className="border-t">
         <div className="container flex h-14 items-center justify-center px-4 text-center sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl">
-            © {new Date().getFullYear()} Next Rendering Module . All rights
-            reserved. <RenderTime name="exercices main layout" />
+            © {new Date().getFullYear()} {moduleName} . All rights reserved.{' '}
+            <RenderTime name="exercices main layout" />
           </div>
         </div>
       </footer>

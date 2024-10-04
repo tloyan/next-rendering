@@ -1,13 +1,13 @@
 import RenderTime from '@/components/render-time'
 import {getPosts} from '@/db/sgbd'
 
-// 🐶 importe noStore
+// 🐶 Importe `noStore`
 // 🤖 import {unstable_noStore as noStore} from 'next/cache'
 
 const Page = async () => {
   const posts = await getPosts()
 
-  // 🐶 appelle 'noStore' ici pour faire un rendu dynamique
+  // 🐶 Appelle `noStore` ici pour faire un rendu dynamique
 
   return (
     <div className="mx-auto max-w-4xl p-6 text-lg">

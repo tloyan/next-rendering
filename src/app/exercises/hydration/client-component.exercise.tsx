@@ -10,12 +10,12 @@ export default function ClientComponent() {
 
   return (
     <div className={cn(isSRR ? 'bg-blue-500' : 'bg-red-500')}>
-      {/* 🐶 Corrige l'error d'imbrication de balises*/}
+      {/* 🐶 Corrige l'erreur d'imbrication de balises*/}
       <p>
         Hello
         <div> ça va ?</div>
       </p>
-      {/* 🐶 Corrige la date en supprimant les HH MM SS
+      {/* 🐶 Corrige la date en supprimant les `HH MM SS`
           🤖 new Date().toISOString().split('T')[0]*/}
       {date}
     </div>
