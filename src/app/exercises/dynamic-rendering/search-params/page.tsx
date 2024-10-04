@@ -10,7 +10,7 @@ const Page = async ({
   const posts = await getPosts()
 
   const filterField = searchParams?.filter as string //Champs à filrer
-  const text = searchParams?.text as string //aleur à filrer
+  const text = searchParams?.text as string //Valeur à filrer
 
   // Filtrer les posts en fonction du `title`
   const filteredPosts = posts.filter((post) =>
