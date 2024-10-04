@@ -5,9 +5,9 @@ import {cookies} from 'next/headers'
 //https://rc.nextjs.org/docs/app/building-your-application/rendering/server-components#dynamic-functions
 
 const Page = async () => {
-  //tester avec fetch
-  //puis cookies
-  //puis header
+  //Teste avec `fetch`
+  //puis `cookies`
+  //puis `header`
   const posts = await getPosts()
 
   const cookieStore = cookies()

@@ -9,10 +9,10 @@ const Page = async ({
 }) => {
   const posts = await getPosts()
 
-  const filterField = searchParams?.filter as string //champs à filrer
-  const text = searchParams?.text as string //valeur à filrer
+  const filterField = searchParams?.filter as string //Champs à filrer
+  const text = searchParams?.text as string //Valeur à filrer
 
-  // Filtrer les posts en fonction du 'title'
+  // Filtre les posts en fonction du `title`
   const filteredPosts = posts.filter((post) =>
     post[filterField as keyof Post]?.toLowerCase().includes(text.toLowerCase())
   )
