@@ -54,6 +54,12 @@ export default function AppLayout({children}: PropsWithChildren) {
               >
                 Static-rendering
               </Link>
+              <Link
+                className="flex items-center space-x-2 font-medium"
+                href="/exercises"
+              >
+                <span>Profile</span>
+              </Link>
 
               <ModeToggle />
             </div>
