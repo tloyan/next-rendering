@@ -4,30 +4,30 @@
 
 ## 📝 Tes notes
 
-Detaille ce que tu as appris ici, sur une page [Notion](https://go.mikecodeur.com/course-notes-template)
+Détaille ce que tu as appris ici, sur une page [Notion](https://go.mikecodeur.com/course-notes-template)
 
 ## Comprendre
 
-Les **React Serveur Components (RSC)** ont de nombreux avantages:
+Les **`React Serveur Components` (`RSC`)** ont de nombreux avantages:
 
-- **Optimisation du rendu initial :** Ils permettent d'optimiser le rendu initial en évitant de transférer du code JavaScript non utilisé.
+- **Optimisation du rendu initial :** Ils permettent d'optimiser le rendu initial en évitant de transférer du code `JavaScript` non utilisé.
 - **Réduction du temps de chargement :** En limitant les transferts de données, ils réduisent le temps de chargement initial des pages.
 - **Meilleure gestion des ressources :** Ils facilitent une meilleure gestion des ressources côté serveur en minimisant le travail répétitif.
 - **Amélioration de la sécurité :** En réduisant l'exposition du code client, ils améliorent la sécurité de l'application.
 - **Meilleure expérience utilisateur :** En permettant un chargement plus rapide et une interface plus réactive, ils améliorent l'expérience globale des utilisateurs.
 
-**Cependant il ne peuvent pas tout faire :**
+**Cependant, il ne peuvent pas tout faire :**
 
-Nous avons toujours besoins de React Client Component (RCC) pour :
+Nous avons toujours besoin de `React Client Component` (`RCC`) pour :
 
 - **Interactivité :** Les composants côté client peuvent utiliser l'état, les effets et les écouteurs d'événements, ce qui leur permet de fournir un retour immédiat à l'utilisateur et de mettre à jour l'interface utilisateur.
 - **APIs du navigateur :** Les composants côté client ont accès aux APIs du navigateur, comme la `géolocalisation` ou `localStorage`.
 
-Avec Next JS, tous les composants React **sont considérés comme RSC par défaut.** Pour pouvoir bénéficier des avantages des RCC il faut explicitement les définir comme client avec la directive `'use client'`
+Avec `Next JS`, tous les composants `React` **sont considérés comme `RSC` par défaut.** Pour pouvoir bénéficier des avantages des `RCC`, il faut explicitement les définir comme client avec la directive `'use client'`
 
 ```tsx
 'use client'
-import { useState } from 'react'
+import {useState} from 'react'
 
 export default function Counter() {
   const [count, setCount] = useState(0)
@@ -41,15 +41,19 @@ export default function Counter() {
 }
 ```
 
-Si le développeur oublie la directive Next va détecter que c’est du code client et va générer une erreur
+Si le développeur oublie la directive, `Next` va détecter que c’est du code client et va générer une erreur
 
+[use-client-directive.avif](/course/use-client-directive.avif)
+
+```tsx
 ![use-client-directive.avif](/course/use-client-directive.avif)
+```
 
-📑 Le liens vers la doc [https://nextjs.org/docs/app/building-your-application/rendering/client-components](https://nextjs.org/docs/app/building-your-application/rendering/client-components)
+📑 Le lien vers la doc [https://nextjs.org/docs/app/building-your-application/rendering/client-components](https://nextjs.org/docs/app/building-your-application/rendering/client-components)
 
 ## Exercice
 
-Commet nous l’avons vu, ajouter du code client sans la directive `‘use client’` génère une erreur. Ici nous avons un RSC (nous ne pouvons donc pas utiliser la directive `‘use client’`) mais nous voulons inclure des composants enfants clients
+Comme nous l’avons vu, ajouter du code client sans la directive `‘use client’` génère une erreur. Ici nous avons un `RSC` (nous ne pouvons donc pas utiliser la directive `‘use client’`) mais nous voulons inclure des composants enfants clients
 
 ```tsx
 //RSC
@@ -62,9 +66,9 @@ export default async function Page() {
   )
 ```
 
-Mais nous voulons utiliser un RCC, un simple composant `<Counter />`
+Mais nous voulons utiliser un `RCC`, un simple composant `<Counter />`
 
-🐶 Ajoute le compteur dans `page.tsx` et adapte le Counter si nécessaire.
+🐶 Ajoute le compteur dans `page.tsx` et adapte le `Counter` si nécessaire.
 
 Fichiers
 
@@ -75,7 +79,7 @@ Fichiers
 
 ### 1. 🚀 Librairie externe
 
-Nous utilisons souvent des librairies React externes dans nos projets. Par exemple ici nous avons une librairies externe
+Nous utilisons souvent des librairies `React` externes dans nos projets. Par exemple ici nous avons une librairie externe.
 
 ```tsx
 //npm install
@@ -87,7 +91,7 @@ import ExternalLib from '@/lib/externalClientLib'
 
 Nous ne pouvons pas ajouter la directive `‘use client’` dessus car il s’agit d’une librairie externe.
 
-- 🐶 Dans un premier temps essaye d’utiliser cette libraire en dessous du compteur dans `page.tsx`
+- 🐶 Dans un premier temps, essaie d’utiliser cette libraire en dessous du compteur dans `page.tsx`
 
 ```tsx
 // exercises/client-components/page.tsx
@@ -98,13 +102,13 @@ import ExternalLib from '@/lib/externalClientLib'
 <ExternalLib defaultDelay={100} />
 ```
 
-Constate l’erreur
+Constate l’erreur :
 
 ```tsx
 Error: useState only works in Client Components. Add the "use client" directive at the top of the file to use it. Read more: https://nextjs.org/docs/messages/react-client-hook-in-server-component
 ```
 
-### Comment faire pour utiliser un RCC externe sans avoir la main sur le code ?
+### Comment faire pour utiliser un `RCC` externe sans avoir la main sur le code ?
 
 - Solution un Wrapper contenant `‘use client’`
 
@@ -126,7 +130,7 @@ Fichiers
 
 ### 2. 🚀 server-only
 
-Nous avons aussi un RCC `<RccFetch>` qui appel un fonction `getData`
+Nous avons aussi un `RCC` `<RccFetch>` qui appelle une fonction `getData` :
 
 ```tsx
 import {getData} from './data'
@@ -137,7 +141,7 @@ export default function RccFetch() {
   ...
 ```
 
-Un fetch qui contient des données sensible comme un token
+Un `fetch` qui contient des données sensibles comme un `token` :
 
 ```tsx
 export async function getData() {
@@ -152,17 +156,17 @@ export async function getData() {
 }
 ```
 
-Il existe un module pour interdire de faire cela : `“server-only”`
+Il existe un module pour interdire de faire cela : `“server-only”` :
 
 ```tsx
 import 'server-only'
 ```
 
-Ce module va déclencher un erreur en cas d’import de code serveur dans le client
+Ce module va déclencher une erreur en cas d’import de code serveur dans le client
 
 Doc [server-only](https://nextjs.org/docs/app/building-your-application/data-fetching/patterns#using-react-cache-server-only-and-the-preload-pattern)
 
-- 🐶 Utilise server-only dans le fichier data.ts
+- 🐶 Utilise `server-only` dans le fichier `data.ts`
 
 Fichiers
 
@@ -183,4 +187,4 @@ Fichiers
 
 ## 🐜 Feedback
 
-Remplir le formulaire le [formulaire de FeedBack](https://go.mikecodeur.com/cours-next-avis?entry.1912869708=Next%20PRO&entry.1430994900=Rendering%20Avancée&entry.533578441=06%20rcc-external-lib).
+Remplir le formulaire le [formulaire de FeedBack](https://go.mikecodeur.com/cours-next-avis?entry.1912869708=Next%20PRO&entry.1430994900=04%20Rendering%20Avancée&entry.533578441=06%20rcc-external-lib).
