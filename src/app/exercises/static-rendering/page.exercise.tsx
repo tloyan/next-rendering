@@ -1,6 +1,6 @@
 import RenderTime from '@/components/render-time'
 
-// 🐶 Importe la fonction 'getPosts' qui permet d'acceder à notre base de donées
+// 🐶 Importe la fonction `getPosts` qui permet d'accéder à notre base de donées
 // 🤖 import {getPosts} from '@/db/sgbd'
 import {Post} from '@/lib/type'
 
