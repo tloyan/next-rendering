@@ -18,7 +18,7 @@ const withMDX = createMDX({
 })
 
 const nextConfig = {
-  pageExtensions: ['js', 'jsx', 'mdx', 'md', 'ts', 'tsx'],
+  pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
   images: {
     remotePatterns: [
       {

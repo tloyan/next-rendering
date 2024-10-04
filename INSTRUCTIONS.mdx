@@ -4,53 +4,52 @@
 
 ## 📝 Tes notes
 
-Detaille ce que tu as appris ici, sur une page [Notion](https://go.mikecodeur.com/course-notes-template)
+Détaille ce que tu as appris ici, sur une page [Notion](https://go.mikecodeur.com/course-notes-template)
 
 ## Comprendre
 
-La deuxième stratégie de rendu coté serveur des RSC est le rendu dynamique. Cobntrairement au rendu statique, le rendu dynamique régénère une nouvelle page sur chaque requête.
+La deuxième stratégie de rendu côté serveur des `RSC` est le rendu dynamique. Contrairement au rendu statique, le rendu dynamique régénère une nouvelle page sur chaque requête.
 
-Ici nous allons explorer le rendu dynamique des composants serveur React avec Next.js. Grâce au rendu dynamique, les routes sont générées à la demande pour chaque utilisateur, ce qui permet de personnaliser les données en fonction des informations spécifiques à chaque requête, comme les cookies ou les paramètres de recherche de l'URL.
+Ici nous allons explorer le rendu dynamique des composants serveur `React` avec `Next.js`. Grâce au rendu dynamique, les routes sont générées à la demande pour chaque utilisateur, ce qui permet de personnaliser les données en fonction des informations spécifiques à chaque requête, comme les `cookies` ou les paramètres de recherche de l'URL.
 
-Cette approche est particulièrement utile pour les sites web qui combinent des données mises en cache et des données non mises en cache, comme les pages de commerce électronique. Next.js gère automatiquement la meilleure stratégie de rendu pour chaque route, en tenant compte des fonctionnalités et des API utilisées, vous permettant ainsi de vous concentrer sur la mise en cache et la revalidation des données spécifiques.
+Cette approche est particulièrement utile pour les sites web qui combinent des données mises en cache et des données non mises en cache, comme les pages de commerce électronique. `Next.js` gère automatiquement la meilleure stratégie de rendu pour chaque route, en tenant compte des fonctionnalités et des `API` utilisées, vous permettant ainsi de vous concentrer sur la mise en cache et la revalidation des données spécifiques.
 
-📑 Le liens vers la doc [https://nextjs.org/docs/app/building-your-application/rendering/server-components#dynamic-rendering](https://nextjs.org/docs/app/building-your-application/rendering/server-components#dynamic-rendering)
+📑 Le lien vers la doc [https://nextjs.org/docs/app/building-your-application/rendering/server-components#dynamic-rendering](https://nextjs.org/docs/app/building-your-application/rendering/server-components#dynamic-rendering)
 
-Concrètement pour switcher vers du rendu dynamique il faut soit :
+Concrètement, pour switcher vers du rendu dynamique, il faut soit :
 
 - Utiliser des [fonctions dynamiques](https://nextjs.org/docs/app/building-your-application/rendering/server-components#dynamic-rendering) (données dépendantes de chaque requête)
 - Demander [le `uncache` des données.](https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating#opting-out-of-data-caching)
 
-| Dynamic Functions | Data       | Route                |
-| ----------------- | ---------- | -------------------- |
-| No                | Cached     | Statically Rendered  |
-| Yes               | Cached     | Dynamically Rendered |
-| No                | Not Cached | Dynamically Rendered |
-| Yes               | Not Cached | Dynamically Rendered |
+| **Dynamic Functions** | **Data**   | **Route**            |
+| --------------------- | ---------- | -------------------- |
+| No                    | Cached     | Statically Rendered  |
+| Yes                   | Cached     | Dynamically Rendered |
+| No                    | Not Cached | Dynamically Rendered |
+| Yes                   | Not Cached | Dynamically Rendered |
 
 ## Exercice
 
-Les fonctions dynamiques reposent sur des informations qui ne peuvent être connues qu'au moment de la requête, telles que les cookies d'un utilisateur, les en-têtes de requêtes en cours ou les paramètres de recherche de l'URL. Dans Next.js, ces API dynamiques
+Les fonctions dynamiques reposent sur des informations qui ne peuvent être connues qu'au moment de la requête, telles que les cookies d'un utilisateur, les en-têtes de requêtes en cours ou les paramètres de recherche de l'URL. Dans `Next.js`, ces `API` dynamiques
 
 - [`cookies()`](https://rc.nextjs.org/docs/app/api-reference/functions/cookies)
 - [`headers()`](https://rc.nextjs.org/docs/app/api-reference/functions/headers)
 - [`unstable_noStore()`](https://rc.nextjs.org/docs/app/api-reference/functions/unstable_noStore)
 - [`unstable_after()`](https://rc.nextjs.org/docs/app/api-reference/functions/unstable_after):
 - [`params`](https://nextjs.org/docs/app/api-reference/file-conventions/page#searchparams-optional) et [`searchParams`](https://nextjs.org/docs/app/api-reference/file-conventions/page#searchparams-optional) [prop](https://rc.nextjs.org/docs/app/api-reference/file-conventions/page#searchparams-optional)
--
 
-Dans cet exercice tu vas devoir créer un React Serveur Component qui affiche un post en particulier. Comme sur un blog, le nombre de post peut augmenter et il n’est pas possible de prédire à la compilation le nombre de `posts` total. Tu vas donc devoir faire du rendu dynamique.
+Dans cet exercice tu vas devoir créer un `React Serveur Component` qui affiche un `post` en particulier. Comme sur un blog, le nombre de post peut augmenter et il n’est pas possible de prédire à la compilation le nombre de `posts` total. Tu vas donc devoir faire du rendu dynamique.
 
-Les segments de routes dynamiques comme la notre : [`exercises/dynamic-rendering/[id]`](exercises/dynamic-rendering/1) vont créer automatiquement des rendus dynamiques.
+Les segments de routes dynamiques comme la nôtre : [`exercises/dynamic-rendering/[id]`](exercises/dynamic-rendering/1) vont créer automatiquement des rendus dynamiques.
 
-Appelle la fonction dynamique `getPostById` pour afficher un post particulier
+Appelle la fonction dynamique `getPostById` pour afficher un post particulier.
 
 ```tsx
 import {getPostById} from '@/db/sgbd'
 const post = await getPostById(params.id)
 ```
 
-_ps : pense à cause où le post n’est pas trouvé_
+_PS : pense à cause où le post n’est pas trouvé._
 
 Fichiers
 
@@ -60,7 +59,7 @@ Fichiers
 
 ### 1. 🚀 Pré-génération de pages dynamiques (generateStaticParams)
 
-Les appels aux sources de données et le rendu coté serveur peut parfois être long. Pour simuler cela dans notre page nous allons utiliser le bout de code suivant :
+Les appels aux sources de données et le rendu côté serveur peuvent parfois être longs. Pour simuler cela dans notre page, nous allons utiliser le bout de code suivant :
 
 ```tsx
 const Page = async ({params}: {params: {id: string}}) => {
@@ -70,19 +69,19 @@ const Page = async ({params}: {params: {id: string}}) => {
 
 ```
 
-- 👨‍✈️ Hugo le chef de projet te demande de pré-générer les pages contenant des posts grâce à la fonction `generateStaticParams`
+- 👨‍✈️ Hugo, le chef de projet, te demande de pré-générer les pages contenant des `posts` grâce à la fonction `generateStaticParams`
 
 ```tsx
 //page.tsx
 export function generateStaticParams() {
-  return [{ id: '1' }, { id: '2' }, { id: '3' }]
+  return [{id: '1'}, {id: '2'}, {id: '3'}]
 }
 ```
 
-- 🐶Récupère la liste des post avec `getPosts` de `'@/db/sgbd’` et retourne tous les ids.
+- 🐶Récupère la liste des `posts` avec `getPosts` de `'@/db/sgbd’` et retourne tous les ids.
 
 <aside>
-💡 Constate avec la commande `build` que les routes `/exercises/dynamic-rendering/x` sont pré-générés.
+💡 Constate avec la commande `build` que les routes `/exercises/dynamic-rendering/x` sont pré-générées.
 
 </aside>
 
@@ -106,11 +105,11 @@ Fichiers
 
 - `exercise/dynamic-rendering/[id]/page.tsx`
 
-### 2. 🚀 revalidation
+### 2. 🚀 Revalidation
 
-👨‍✈️ Hugo le chef de projet nous indique que les `posts` peuvent être mis à jour de temps en temps par les rédacteurs. Mais dans le cas actuel, une fois les pages générées, elle ne sont plus mises à jour en cas de changement de données en BDD. (fais le test en changeant le `title` dans `db.json`)
+👨‍✈️ Hugo, le chef de projet, nous indique que les `posts` peuvent être mis à jour de temps en temps par les rédacteurs. Mais dans le cas actuel, une fois les pages générées, elles ne sont plus mises à jour en cas de changement de données en BDD. (fais le test en changeant le `title` dans `db.json`)
 
-Ajoute le bout de code qui permet un revalidation des données après X secondes.
+Ajoute le bout de code qui permet une revalidation des données après X secondes.
 
 📑 Le lien vers la doc : [https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating#time-based-revalidation](https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating#time-based-revalidation)
 
@@ -120,12 +119,12 @@ Fichiers
 
 ### 3. 🚀 Search Params
 
-👨‍✈️ Hugo le chef de projet de demande de faire une autre route dans laquelle nous allons pouvoir filtrer des posts en query params par exemple avec `filter` et `text`[?filter=title&text=superpost](http://localhost:3000/exercises/dynamic-rendering/search-params?filter=title&text=a)
+👨‍✈️ Hugo, le chef de projet, te demande de faire une autre route dans laquelle nous allons pouvoir filtrer des `posts` en `query params`, par exemple avec `filter` et `text`[?filter=title&text=superpost](http://localhost:3000/exercises/dynamic-rendering/search-params?filter=title&text=a)
 
-- `filter :`le champs a filter
-- `text` : le terme de recherche
+- `filter` : le champ à filtrer.
+- `text` : le terme de recherche.
 
-Pour avoir des query params il faut utiliser ces props :
+Pour avoir des `query params`, il faut utiliser ces `props` :
 
 ```tsx
 const Page = async ({
@@ -135,8 +134,8 @@ const Page = async ({
 }) => {
 ```
 
-- **🐶 Le composant :** `exercise/dynamic-rendering/search-params/page.tsx` est statique par default. (constate le avec un `build/start` de production)
-- Adapte le pour le rendre dynamique grâce au `searchParams` et constate le rendu dynamique en production
+- **🐶 Le composant :** `exercise/dynamic-rendering/search-params/page.tsx` est statique par défault. (Constate le avec un `build/start` de production).
+- Adapte le pour le rendre dynamique grâce au `searchParams` et constate le rendu dynamique en production.
 
 Fichiers
 
@@ -156,4 +155,4 @@ Fichiers
 
 ## 🐜 Feedback
 
-Remplir le formulaire le [formulaire de FeedBack](https://go.mikecodeur.com/cours-next-avis?entry.1912869708=Next%20PRO&entry.1430994900=Rendering%20Avancée&entry.533578441=02%20dynamic-rendering-function).
+Remplir le formulaire le [formulaire de FeedBack](https://go.mikecodeur.com/cours-next-avis?entry.1912869708=Next%20PRO&entry.1430994900=04%20Rendering%20Avancée&entry.533578441=02%20dynamic-rendering-function).
