@@ -4,39 +4,47 @@
 
 ## 📝 Tes notes
 
-Detaille ce que tu as appris ici, sur une page [Notion](https://go.mikecodeur.com/course-notes-template)
+Détaille ce que tu as appris ici, sur une page [Notion](https://go.mikecodeur.com/course-notes-template)
 
 ## Comprendre
 
-Avec Next et les React Server Components, Il faut toujours ce poser la question. dois je faire une RCC (Client) ou un RSC (Serveur) et surtout comment organiser son application pour avoir des RCC et RSC qui s’imbriquent correctement.
+Avec `Next` et les `React Server Components`, il faut toujours se poser la question. Dois-je faire une `RCC` (Client) ou un `RSC` (Serveur) et surtout comment organiser son application pour avoir des `RCC` et `RSC` qui s’imbriquent correctement.
 
 **Faire 100% de RCC ?**
 
-- On perd l’avantage du SSR, de la réduction du bundle client etc …
+- On perd l’avantage du `SSR`, de la réduction du `bundle client` etc …
 
 **Faire 100% de RSC ?**
 
-- Impossible, car l’application aurait aucune interactivité
+- Impossible, car l’application n’aurait aucune interactivité.
 
-![rcc-rsc](/course/rcc-rsc-usage.png)
+![rcc-rsc-usage.png](/course/rcc-rsc-usage.png)
 
-📑 Le liens vers la doc https://rc.nextjs.org/docs/app/building-your-application/rendering/composition-patterns#when-to-use-server-and-client-components
+```tsx
+![rcc-rsc-usage.png](/course/rcc-rsc-usage.png)
+```
 
-Voila a quoi pourrait ressembler un arbre de composants pour notre segment de route.
+📑 Le lien vers la doc https://rc.nextjs.org/docs/app/building-your-application/rendering/composition-patterns#when-to-use-server-and-client-components
 
-- Des RSC qui contiennent des RCC
-- Des RCC qui contiennent des RSC
+Voilà à quoi pourrait ressembler un arbre de composants pour notre segment de route :
 
+- Des `RSC` qui contiennent des `RCC`.
+- Des `RCC` qui contiennent des `RSC`.
+
+![rcc-rsc-tree](/course/rcc-rsc-tree.png)
+
+```tsx
 ![rcc-rsc-tree.png](/course/rcc-rsc-tree.png)
+```
 
-Mais il y a certaines conditions a respecter.
+Mais il y a certaines conditions à respecter.
 
-- Les RSC peuvent contenir des RCC sans contraintes (par `import` ou `props`)
-- Les RCC peuvent contenir des RSC (via `props` : `children` ou autres`props`)
+- Les `RSC` peuvent contenir des `RCC` sans contraintes (par `import` ou `props`).
+- Les `RCC` peuvent contenir des `RSC` (via `props` : `children` ou autres `props`).
 
 Exemple :
 
-- Il est interdit d’importer des RCC dans des RCC
+- Il est interdit d’importer des `RCC` dans des `RCC`
 
 ```tsx
 //app/client-component.tsx
@@ -67,7 +75,7 @@ export default function ClientComponent({
 //app/client-component.tsx
 'use client'
 
-import { useState } from 'react'
+import {useState} from 'react'
 
 export default function ClientComponent({
   children,
@@ -99,11 +107,15 @@ export default function Page() {
 }
 ```
 
-![rcc-rsc-tree.png](/course/rcc-rsc-tree-prop.png)
+![rcc-rsc-tree-prop.png](/course/rcc-rsc-tree-prop.png)
+
+```tsx
+![rcc-rsc-tree-prop.png](/course/rcc-rsc-tree-prop.png)
+```
 
 📑 Le lien vers la doc [https://rc.nextjs.org/docs/app/building-your-application/rendering/composition-patterns#interleaving-server-and-client-components](https://rc.nextjs.org/docs/app/building-your-application/rendering/composition-patterns#interleaving-server-and-client-components)
 
-Pour les exercices nous utiliserons un composant qui détecte le type du composant (en se basant sur la présence de window) et affiche une couleur
+Pour les exercices, nous utiliserons un composant qui détecte le type du composant (en se basant sur la présence de `window`) et affiche une couleur
 
 ```tsx
 const actualType = detectActualType()
@@ -118,28 +130,32 @@ export function detectActualType() {
 - Rouge —> Client
 - Bleu —> Serveur
 
-![rcc-rsc-tree.png](/course/component-tree.png)
+![component-tree.png](/course/component-tree.png)
+
+```tsx
+![component-tree.png](/course/component-tree.png)
+```
 
 ## Exercice
 
-Dans cet exercice nous allons essayer plusieurs combinaisons possibles
+Dans cet exercice, nous allons essayer plusieurs combinaisons possibles
 
 - Client → Server (`children`)
 - Server → Client (`children`)
 - Server contenant un Client (`import`)
 - Client contenant un Serveur (`import`)
 
-Pour nous aider il existe des composants :
+Pour nous aider, il existe des composants :
 
-- `server.tsx :` Le composant `<Server>` contenant `‘use server’`
+- `server.tsx` : Le composant `<Server>` contenant `‘use server’`
 - `client.tsx` : Le composant `<Client>` contenant `‘use client’`
 - `clientWithServer.tsx` : Composant client qui importe un `<Server>`
-- `servertWithClient.tsx` : Composant server qui importe un `<Client>`
+- `servertWithClient.tsx` : Composant serveur qui importe un `<Client>`
 
 Fichiers qu’il nous suffira d’importer et utiliser dans `page.tsx`
 
 <aside>
-💡 *ps : `<ClientWithServer />` risque de poser problème ce qui est normal un RCC ne peut pas importer un RSC*
+💡 *PS : `<ClientWithServer />` risque de poser problème ce qui est normal un `RCC` ne peut pas importer un `RSC`*
 
 </aside>
 
@@ -151,36 +167,40 @@ Fichiers
 
 ### 1. 🚀 RCIC (React Contextual Isomorphic Component)
 
-Les RCIC ne sont pas nommés explicitement comme cela dans la documentation de Next.js. J’ai défini ce terme explicitement pour décrire un type particulier de composants React dans Next.js.
+Les `RCIC` ne sont pas nommés explicitement comme cela dans la documentation de `Next.js`. J’ai défini ce terme explicitement pour décrire un type particulier de composants `React` dans `Next.js`.
 
 - **React Component** : Ce sont des composants React classiques.
 - **Isomorphic** : Ils peuvent s'exécuter côté `Client` ou côté `Server`, selon le contexte.
-  - **Sans interactivité client** : Pas d'utilisation de hooks ou d'événements spécifiques au client.
+  - **Sans interactivité client** : Pas d'utilisation de `hooks` ou d'événements spécifiques au client.
   - **Sans opérations serveur** : Pas d'opérations d'entrée/sortie (IO) ou d'accès aux ressources serveur directes.
 - **Contextual** : Leur type (client ou serveur) dépend du contexte dans lequel ils sont inclus (importés).
   - Lorsqu'ils sont inclus (importés) dans un composant client, ils adoptent le comportement du client.
   - Lorsqu'ils sont inclus (importés) dans un composant serveur, ils adoptent le comportement du serveur.
   - Lorsqu'ils sont passés en tant que `children` à un composant (client ou serveur), ils sont serveur par défaut.
 
-Dans notre arbre de composant, à partir du moment ou un composant devient explicitement client `‘use client’` les RCIC enfant importés seront des `clients`. Ce qui alourdie le bundle et peut rendre l’hydration plus longue. Voilà pourquoi il est recommandé :
+Dans notre arbre de composant, à partir du moment où un composant devient explicitement client `‘use client’` les `RCIC` enfant importés seront des `clients`. Ce qui alourdit le bundle et peut rendre l’`hydration` plus longue. Voilà pourquoi il est recommandé :
 
 <aside>
-💡 Descendre les RCC le plus bas possible dans l’arbre de composant
+💡 Descendre les `RCC` le plus bas possible dans l’arbre de composant
 
 </aside>
 
-Exemple de composition identique . La seule différence est le parent
+Exemple de composition identique . La seule différence est le parent :
 
-![rcc-rsc-tree.png](/course/compo-iso-tree.png)
+![compo-iso-tree.png](/course/compo-iso-tree.png)
 
-- 🐶 Dans cet exercice nous avons un RSC (`server.tsx` `<Server>`) mais qui ne contient pas de code spécifique au client (FS par exemple) ou de code client (Hook, Localstorage par exemple)
+```tsx
+![compo-iso-tree.png](/course/compo-iso-tree.png)
+```
 
-**Il est donc candidat pour être un RCIC**
+- 🐶 Dans cet exercice, nous avons un `RSC` (`server.tsx` `<Server>`) mais qui ne contient pas de code spécifique au client (`FS` par exemple) ou de code client (`Hook`, `Localstorage` par exemple)
 
-- 🐶 Transforme le en RCIC (`server.tsx`)
+**Il est donc candidat pour être un `RCIC`**
+
+- 🐶 Transforme le en `RCIC` (`server.tsx`)
   - **⛏️ Supprime la directive** `use server`
-  - **🤖 Change son type pour l’afficher correctement :** ``
-**🤖**`componentType={ComponentTypeEnum.ISOMORPHIC}`
+  - **🤖 Change son type pour l’afficher correctement :**
+    **🤖**`componentType={ComponentTypeEnum.ISOMORPHIC}`
 
 ```tsx
 //server.tsx
@@ -200,7 +220,6 @@ export default async function Server({children}: {children?: React.ReactNode}) {
     </CardComponentType>
   )
 }
-
 ```
 
 - 🐶 Utilise le dans `page.tsx`
@@ -213,8 +232,6 @@ Fichiers
 
 - `exercise/composition/server.tsx`
 - `exercise/composition/page.tsx`
-
-###
 
 ## Aller plus loin
 
@@ -230,4 +247,4 @@ Fichiers
 
 ## 🐜 Feedback
 
-Remplir le formulaire le [formulaire de FeedBack](https://go.mikecodeur.com/cours-next-avis?entry.1912869708=Next%20PRO&entry.1430994900=Rendering%20Avancée&entry.533578441=01%20composition-patterns).
+Remplir le formulaire le [formulaire de FeedBack](https://go.mikecodeur.com/cours-next-avis?entry.1912869708=Next%20PRO&entry.1430994900=04%20Rendering%20Avancée&entry.533578441=07%20composition-patterns).
