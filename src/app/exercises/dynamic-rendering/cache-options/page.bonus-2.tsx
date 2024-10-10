@@ -1,4 +1,4 @@
-//2. 🚀 revalidate
+//2. 🚀 Revalidate
 import RenderTime from '@/components/render-time'
 import {getPosts} from '@/db/sgbd'
 
