@@ -107,7 +107,7 @@ Les routes statiques peuvent être regénérées [en se basant sur le temps](htt
 export const revalidate = 3600 // revalidate at most every hour
 ```
 
-ou [manuellement](https://www.notion.so/1-Static-Rendering-b518ffb87d1241d9b7faa9984b54d1f9?pvs=21)
+ou [manuellement](https://nextjs.org/docs/app/api-reference/functions/revalidateTag)
 
 Les données peuvent être revalidées à la demande par chemin (`revalidatePath`) ou par balise de cache (`revalidateTag`) dans une action serveur ou un gestionnaire de route. Exemple :
 
