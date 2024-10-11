@@ -117,7 +117,46 @@ Fichiers
 
 - `exercise/dynamic-rendering/[id]/page.tsx`
 
-### 3. 🚀 Search Params
+### 3. 🚀 Dynamic MetaData
+
+Avec Next il est facile de generer des MétaData (utile pour le SEO) pour cela il suffit d’exporter `export const metadata`
+
+```tsx
+export const metadata: Metadata = {
+  title: '...',
+  description: '...',
+}
+```
+
+Il est possible de générer des MétaData de manière dynamique
+
+```tsx
+export async function generateMetadata({
+  params,
+}: {
+  params: {id: string}
+}): Promise<Metadata> {
+
+...
+	return {
+	  title: 'Post Not Found',
+	  description: 'This post does not exist.',
+	  openGraph: {
+      title: post.title,
+      ....
+	}
+}
+```
+
+📑 Le lien vers la doc [https://nextjs.org/docs/app/building-your-application/optimizing/metadata#dynamic-metadata](https://nextjs.org/docs/app/building-your-application/optimizing/metadata#dynamic-metadata)
+
+**🐶**Dans cet exercice génère les métaData pour ces routes dynamique
+
+Fichiers
+
+- `exercise/dynamic-rendering/[id]/page.tsx`
+
+### 4. 🚀 Search Params
 
 👨‍✈️ Hugo, le chef de projet, te demande de faire une autre route dans laquelle nous allons pouvoir filtrer des `posts` en `query params`, par exemple avec `filter` et `text`[?filter=title&text=superpost](http://localhost:3000/exercises/dynamic-rendering/search-params?filter=title&text=a)
 

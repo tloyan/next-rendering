@@ -1,4 +1,6 @@
 export {default} from './page.exercise'
+// eslint-disable-next-line import/export
+export * from './page.exercise'
 
 //export {default} from './page.final'
 
@@ -9,3 +11,7 @@ export {default} from './page.exercise'
 // 2. 🚀 Revalidation
 // export {default} from './page.bonus-2'
 // export * from './page.bonus-2'
+
+// 3. 🚀 Methadata
+// export {default} from './page.bonus-3'
+// export * from './page.bonus-3'
