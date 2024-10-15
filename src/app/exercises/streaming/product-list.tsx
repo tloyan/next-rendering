@@ -20,7 +20,9 @@ export async function ProductList() {
 }
 
 export function ProductDetail({product}: {product?: Product}) {
-  const imageUrl = 'https://via.placeholder.com/250x125'
+  //https://via.placeholder.com/250x125
+  const imageUrl =
+    'https://images.placeholders.dev/?width=250&height=125&text=Next%20Mastery'
   return (
     <div className="flex flex-col space-y-3">
       <div className="h-[125px] w-[250px] rounded-xl">

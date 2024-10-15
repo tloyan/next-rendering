@@ -19,11 +19,18 @@ const withMDX = createMDX({
 
 const nextConfig = {
   pageExtensions: ['js', 'jsx', 'mdx', 'md', 'ts', 'tsx'],
+
   images: {
+    dangerouslyAllowSVG: true,
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'via.placeholder.com',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.placeholders.dev',
         port: '',
       },
     ],
