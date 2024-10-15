@@ -16,19 +16,11 @@ Le streaming intégré au routeur d'application de `Next.js` améliore la perfor
 
 `Sequential` vs `Paralell` :
 
-[sequential-parallel-data-fetching.avif](/course/sequential-parallel-data-fetching.avif)
-
-```tsx
-![server-rendering-without-streaming-chart.avif](/course/sequential-parallel-data-fetching.avif)
-```
+![sequential-parallel-data-fetching.avif](/course/sequential-parallel-data-fetching.avif)
 
 Partiel content
 
-[server-rendering-with-streaming.avif](/course/server-rendering-with-streaming.avif)
-
-```tsx
-![server-rendering-without-streaming-chart.avif](/course/server-rendering-with-streaming.avif)
-```
+![server-rendering-with-streaming.avif](/course/server-rendering-with-streaming.avif)
 
 📑 Le lien vers la doc [https://nextjs.org/docs/app/building-your-application/rendering/server-components#streaming](https://nextjs.org/docs/app/building-your-application/rendering/server-components#streaming)
 
@@ -43,13 +35,9 @@ Ces composants sont chargés dans un `Dashboard` sur le segment de route : [/exe
 
 ![streaming-exca.png](/course/streaming-exca.png)
 
-```tsx
-[image](</course/streaming-exca.png>)
-```
-
 **👨‍✈️ Hugo, le chef de projet,** demande de rendre le contenu du `dashboard` ([/exercises/streaming](http://localhost:3000/exercises/streaming)) non bloquant (comme c’est le cas actuellement).
 
-### Pourquoi est bloquant :
+### Pourquoi c'est bloquant :
 
 Pour comprendre pourquoi c’est bloquant, il est utile de comprendre le rendu côté serveur (`SSR`) et ses limites.
 
@@ -61,11 +49,7 @@ Avec le `SSR`, plusieurs étapes doivent être complétées avant que l'utilisat
 - **Affichage initial :** Une interface utilisateur non interactive est affichée à l'aide du `HTML` et du `CSS` générés.
 - **Hydratation par `React` :** Enfin, `React` hydrate l'interface utilisateur pour la rendre interactive.
 
-[server-rendering-without-streaming-chart.avif](/course/server-rendering-without-streaming-chart.avif)
-
-```tsx
 ![server-rendering-without-streaming-chart.avif](/course/server-rendering-without-streaming-chart.avif)
-```
 
 Comme le `fetching` de data serveur et `rendrering` peut être long, `Next` permet d’avoir un fichier `loading.tsx` au niveau du segment de route, cela permet d’avoir un `FCP` rapide.
 
