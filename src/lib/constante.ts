@@ -1,1 +1,1 @@
-export const moduleName = 'Next RSC-Data-Fetching-Cache'
+export const moduleName = 'Next Rendering avancé'
