@@ -1,9 +1,18 @@
-//export {default} from './page.final'
+import RenderTime from '@/components/render-time'
+import {getPosts} from '@/db/sgbd'
 
-export {default} from './page.exercise'
+export const revalidate = 0
 
-//1. 🚀 force-dynamique
-// export {default} from './page.bonus-1'
-
-//2. 🚀 revalidate
-// export {default} from './page.bonus-2'
+const Page = async () => {
+  const posts = await getPosts()
+  return (
+    <div className="mx-auto max-w-4xl p-6 text-lg">
+      <h1 className="mb-4 text-center text-3xl font-bold">Fetch Posts</h1>
+      <ul className="list-disc p-4 pl-4">
+        {posts?.map((post) => <li key={post.title}>{post.title}</li>)}
+      </ul>
+      <RenderTime />
+    </div>
+  )
+}
+export default Page
