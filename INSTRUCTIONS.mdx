@@ -20,10 +20,6 @@ Avec `Next` et les `React Server Components`, il faut toujours se poser la quest
 
 ![rcc-rsc-usage.png](/course/rcc-rsc-usage.png)
 
-```tsx
-![rcc-rsc-usage.png](/course/rcc-rsc-usage.png)
-```
-
 📑 Le lien vers la doc https://rc.nextjs.org/docs/app/building-your-application/rendering/composition-patterns#when-to-use-server-and-client-components
 
 Voilà à quoi pourrait ressembler un arbre de composants pour notre segment de route :
@@ -32,10 +28,6 @@ Voilà à quoi pourrait ressembler un arbre de composants pour notre segment de 
 - Des `RCC` qui contiennent des `RSC`.
 
 ![rcc-rsc-tree](/course/rcc-rsc-tree.png)
-
-```tsx
-![rcc-rsc-tree.png](/course/rcc-rsc-tree.png)
-```
 
 Mais il y a certaines conditions à respecter.
 
@@ -109,10 +101,6 @@ export default function Page() {
 
 ![rcc-rsc-tree-prop.png](/course/rcc-rsc-tree-prop.png)
 
-```tsx
-![rcc-rsc-tree-prop.png](/course/rcc-rsc-tree-prop.png)
-```
-
 📑 Le lien vers la doc [https://rc.nextjs.org/docs/app/building-your-application/rendering/composition-patterns#interleaving-server-and-client-components](https://rc.nextjs.org/docs/app/building-your-application/rendering/composition-patterns#interleaving-server-and-client-components)
 
 Pour les exercices, nous utiliserons un composant qui détecte le type du composant (en se basant sur la présence de `window`) et affiche une couleur
@@ -131,10 +119,6 @@ export function detectActualType() {
 - Bleu —> Serveur
 
 ![component-tree.png](/course/component-tree.png)
-
-```tsx
-![component-tree.png](/course/component-tree.png)
-```
 
 ## Exercice
 
@@ -188,10 +172,6 @@ Dans notre arbre de composant, à partir du moment où un composant devient expl
 Exemple de composition identique . La seule différence est le parent :
 
 ![compo-iso-tree.png](/course/compo-iso-tree.png)
-
-```tsx
-![compo-iso-tree.png](/course/compo-iso-tree.png)
-```
 
 - 🐶 Dans cet exercice, nous avons un `RSC` (`server.tsx` `<Server>`) mais qui ne contient pas de code spécifique au client (`FS` par exemple) ou de code client (`Hook`, `Localstorage` par exemple)
 
