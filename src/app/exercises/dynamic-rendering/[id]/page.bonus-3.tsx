@@ -8,11 +8,10 @@ import {Metadata} from 'next/types'
 
 export const revalidate = 10
 
-export async function generateMetadata({
-  params,
-}: {
-  params: {id: string}
+export async function generateMetadata(props: {
+  params: Promise<{id: string}>
 }): Promise<Metadata> {
+  const params = await props.params //next 15
   const post = await getPostById(params.id)
 
   if (!post) {
@@ -51,7 +50,8 @@ export async function generateStaticParams() {
     id: `${post.id}`,
   }))
 }
-const Page = async ({params}: {params: {id: string}}) => {
+const Page = async (props: {params: Promise<{id: string}>}) => {
+  const params = await props.params //next 15
   await new Promise((resolve) => setTimeout(resolve, 2000))
   const post = await getPostById(params.id)
   if (!post) notFound()

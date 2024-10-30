@@ -50,24 +50,6 @@ export default function AppLayout({children}: PropsWithChildren) {
             </div>
             <div className="flex items-center space-x-2">
               <Link
-                className="text-sm font-semibold underline sm:hidden"
-                href="/exercises"
-              >
-                Home
-              </Link>
-              <Link
-                className="text-sm font-semibold underline sm:hidden"
-                href="/exercises/static-rendering"
-              >
-                Static-rendering
-              </Link>
-              <Link
-                className="text-sm font-semibold underline sm:hidden"
-                href="/exercises/dynamic-rendering"
-              >
-                Dynamic-rendering
-              </Link>
-              <Link
                 className="flex items-center space-x-2 font-medium"
                 href="/exercises"
               >

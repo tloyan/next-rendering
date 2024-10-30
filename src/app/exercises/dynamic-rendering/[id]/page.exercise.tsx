@@ -2,7 +2,8 @@ import RenderTime from '@/components/render-time'
 // 🐶 Importe `getPostById` la fonction qui accède à la BDD.
 // 🤖 import {getPostById} from '@/db/sgbd'
 
-const Page = async ({params}: {params: {id: string}}) => {
+const Page = async (props: {params: Promise<{id: string}>}) => {
+  const params = await props.params //next 15
   //🐶 Remplace ce tableau par l'appel à la fonction `getPostById` avec l'ID de l'article.
   const post = {id: `${params.id}`, title: 'FAKE POST'}
   // 🐶 Affiche une page 404 si l'id de post n'existe pas en BDD

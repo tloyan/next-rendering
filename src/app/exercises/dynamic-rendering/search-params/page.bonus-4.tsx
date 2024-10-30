@@ -2,11 +2,10 @@ import RenderTime from '@/components/render-time'
 import {getPosts} from '@/db/sgbd'
 import {Post} from '@/lib/type'
 
-const Page = async ({
-  searchParams,
-}: {
-  searchParams: {[key: string]: string | string[] | undefined}
+const Page = async (props: {
+  searchParams: Promise<{[key: string]: string | string[] | undefined}>
 }) => {
+  const searchParams = await props.searchParams // next 15
   const posts = await getPosts()
 
   const filterField = searchParams?.filter as string //Champs à filrer

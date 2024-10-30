@@ -62,7 +62,7 @@ Fichiers
 Les appels aux sources de données et le rendu côté serveur peuvent parfois être longs. Pour simuler cela dans notre page, nous allons utiliser le bout de code suivant :
 
 ```tsx
-const Page = async ({params}: {params: {id: string}}) => {
+const Page = async ({params}: {params:Promise<{id: string}>}) => {
   //2 secondes latency
   await new Promise((resolve) => setTimeout(resolve, 2000))
   ...
@@ -131,11 +131,10 @@ export const metadata: Metadata = {
 Il est possible de générer des MétaData de manière dynamique
 
 ```tsx
-export async function generateMetadata({
-  params,
-}: {
-  params: {id: string}
+export async function generateMetadata(props: {
+  params: Promise<{id: string}>
 }): Promise<Metadata> {
+  const params = await props.params
 
 ...
 	return {
@@ -166,11 +165,13 @@ Fichiers
 Pour avoir des `query params`, il faut utiliser ces `props` :
 
 ```tsx
-const Page = async ({
+export default async function Page({
   searchParams,
 }: {
-  searchParams: {[key: string]: string | string[] | undefined}
-}) => {
+  searchParams: Promise<{[key: string]: string | string[] | undefined}>
+}) {
+  const filters = (await searchParams).filters
+}
 ```
 
 - **🐶 Le composant :** `exercise/dynamic-rendering/search-params/page.tsx` est statique par défault. (Constate le avec un `build/start` de production).

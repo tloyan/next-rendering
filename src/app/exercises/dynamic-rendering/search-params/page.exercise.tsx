@@ -6,6 +6,7 @@ import {Post} from '@/lib/type'
 // 🐶 par rapport à l'exercice 3. 🚀 Search Params
 
 // 🐶 Ajoute les `props` pour avoir accès à `searchParams`
+//https://nextjs.org/docs/app/api-reference/file-conventions/page#searchparams-optional
 const Page = async () => {
   const posts = await getPosts()
 

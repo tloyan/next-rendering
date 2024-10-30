@@ -2,7 +2,8 @@ import RenderTime from '@/components/render-time'
 import {getPostById} from '@/db/sgbd'
 import {notFound} from 'next/navigation'
 
-const Page = async ({params}: {params: {id: string}}) => {
+const Page = async (props: {params: Promise<{id: string}>}) => {
+  const params = await props.params //next 15
   const post = await getPostById(params.id)
   if (!post) notFound()
 
