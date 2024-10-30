@@ -7,7 +7,7 @@ import {headers} from 'next/headers'
 const Page = async () => {
   const posts = await getPosts()
 
-  const headersList = headers()
+  const headersList = await headers()
   const userAgent = headersList.get('User-Agent')
   console.log('User-Agent', userAgent)
   if (!userAgent?.includes('Chrome/126.0.0.0')) posts.length = 0

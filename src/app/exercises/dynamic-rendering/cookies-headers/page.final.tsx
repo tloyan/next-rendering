@@ -5,7 +5,7 @@ import {cookies} from 'next/headers'
 
 const Page = async () => {
   const posts = await getPosts()
-  const cookieStore = cookies()
+  const cookieStore = await cookies()
   const uid = cookieStore.get('userid')?.value ?? undefined
   if (!uid) posts.length = 0
   return (

@@ -8,6 +8,7 @@ import {Post} from '@/lib/type'
 const Page = async () => {
   const posts = await getPosts()
 
+  // https://nextjs.org/docs/app/api-reference/functions/cookies
   // 🐶 Recupère les cookies
   // const cookieStore =  ...
 
