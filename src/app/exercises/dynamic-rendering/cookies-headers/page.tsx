@@ -11,11 +11,11 @@ const Page = async () => {
 
   const posts = await getPosts()
 
-  const headersList = headers()
+  const headersList = await headers()
   const userAgent = headersList.get('User-Agent')
   if (!userAgent?.includes('Chrome/126.0.0.0')) posts.length = 0
 
-  const cookieStore = cookies()
+  const cookieStore = await cookies()
   const uid = cookieStore.get('userid')?.value ?? undefined
   if (!uid) posts.length = 0
 
