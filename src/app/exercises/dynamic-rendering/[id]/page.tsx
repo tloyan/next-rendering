@@ -13,7 +13,8 @@ export async function generateStaticParams() {
     id: `${post.id}`,
   }))
 }
-const Page = async ({params}: {params: {id: string}}) => {
+const Page = async (props: {params: Promise<{id: string}>}) => {
+  const params = await props.params
   await new Promise((resolve) => setTimeout(resolve, 2000))
   const post = await getPostById(params.id)
   if (!post) notFound()
