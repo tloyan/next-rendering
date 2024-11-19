@@ -10,7 +10,7 @@ import {
   Todo,
   User,
 } from '@/lib/type'
-import {JSONFilePreset} from 'lowdb/node'
+import { JSONFilePreset } from 'lowdb/node'
 
 const randomError = false
 const slowConnexion = true
@@ -25,7 +25,7 @@ type BddDataType = {
 }
 
 const defaultData: BddDataType = {
-  posts: [{id: '1', title: 'Default post'}],
+  posts: [{ id: '1', title: 'Default post' }],
   products: [
     {
       id: '1',
@@ -72,7 +72,7 @@ const defaultData: BddDataType = {
     },
   ],
   sessions: [
-    {sessionId: '1', userId: '1', expiresAt: new Date().toISOString()},
+    { sessionId: '1', userId: '1', expiresAt: new Date().toISOString() },
   ],
 }
 
@@ -83,8 +83,8 @@ export default async function lowDb() {
 async function initDb() {
   const db = await JSONFilePreset('./src/db/db.json', defaultData)
   if (db.data.posts?.length === 1) {
-    db.update(({posts}: BddDataType) =>
-      posts?.push({id: '2', title: 'Un post'})
+    db.update(({ posts }: BddDataType) =>
+      posts?.push({ id: '2', title: 'Un post' })
     )
   }
 
@@ -93,14 +93,14 @@ async function initDb() {
 
 export async function getTodos() {
   const db = await lowDb()
-  const {todos} = db.data
+  const { todos } = db.data
   return todos
 }
 
 export async function addTodo(todo: AddTodo) {
   await simulateUnstableServer()
   const db = await lowDb()
-  await db.update(({todos}) => {
+  await db.update(({ todos }) => {
     todos?.push({
       id: todo.id ?? todos.length + 1,
       title: todo.title,
@@ -114,7 +114,7 @@ export async function updateTodo(todo: Todo) {
   await simulateUnstableServer()
   todo.updadtedAt = new Date().toISOString()
   const db = await lowDb()
-  await db.update(({todos}) => {
+  await db.update(({ todos }) => {
     updateById(todos ?? [], todo)
   })
 }
@@ -122,15 +122,15 @@ export async function updateTodo(todo: Todo) {
 export async function getProducts() {
   console.log('getProducts dao')
   const db = await lowDb()
-  const {products} = db.data
+  const { products } = db.data
   return sortByDate(products, 'asc')
 }
 
 export async function addProduct(product: Product) {
   console.log('addProduct', product)
-  await simulateUnstableServer({slow: true})
+  await simulateUnstableServer({ slow: true })
   const db = await lowDb()
-  await db.update(({products}) => {
+  await db.update(({ products }) => {
     products?.push({
       id: `${products.length + 1}`,
       title: product.title,
@@ -152,10 +152,10 @@ export async function persistProduct(product: Product) {
 
 export async function updateProduct(product: Product) {
   console.log('updateProduct', product)
-  await simulateUnstableServer({slow: true})
+  await simulateUnstableServer({ slow: true })
   product.updadtedAt = product.updadtedAt ?? new Date().toISOString()
   const db = await lowDb()
-  await db.update(({products}) => {
+  await db.update(({ products }) => {
     updateById(products ?? [], product)
   })
 }
@@ -163,7 +163,7 @@ export async function updateProduct(product: Product) {
 export async function deleteProduct(id: string) {
   console.log('deleteProduct', id)
   const db = await lowDb()
-  await db.update(({products}) => {
+  await db.update(({ products }) => {
     deleteById(products ?? [], id)
   })
 }
@@ -171,14 +171,14 @@ export async function deleteProduct(id: string) {
 export async function getProductById(id: string) {
   console.log('getProductById', id)
   const db = await lowDb()
-  const {products} = db.data
+  const { products } = db.data
   return products?.find((product) => product.id === id)
 }
 
 export async function getProductByName(name: string) {
   console.log('getProductByName', name)
   const db = await lowDb()
-  const {products} = db.data
+  const { products } = db.data
   const lowerCaseName = name.toLowerCase()
   return products?.find(
     (product) => product.title.toLowerCase() === lowerCaseName
@@ -250,7 +250,7 @@ export async function addPost(post: Post) {
   console.log('addPost', post)
   //await simulateUnstableServer({slow: true})
   const db = await lowDb()
-  await db.update(({posts}) => {
+  await db.update(({ posts }) => {
     posts?.push({
       id: `${posts.length + 1}`,
       title: post.title,
@@ -260,7 +260,7 @@ export async function addPost(post: Post) {
 export async function getPostById(id: string) {
   console.log('getPostById', id)
   const db = await lowDb()
-  const {posts} = db.data
+  const { posts } = db.data
   return posts?.find((post) => post.id === id)
 }
 
@@ -268,7 +268,7 @@ async function simulateUnstableServer({
   slow = slowConnexion,
   random = randomError,
   serverTime = serverResponseTime,
-}: {slow?: boolean; random?: boolean; serverTime?: number} = {}) {
+}: { slow?: boolean; random?: boolean; serverTime?: number } = {}) {
   if (slow) {
     await new Promise((resolve) => setTimeout(resolve, serverTime))
   }
@@ -291,17 +291,17 @@ export async function addUser(user: AddUser) {
     name: user.name,
     role: user.role,
   }
-  await db.update(({users}) => {
+  await db.update(({ users }) => {
     users?.push(newUser)
   })
   return newUser
 }
 export async function updateUser(user: User) {
   console.log('updateUser', user)
-  await simulateUnstableServer({slow: true})
+  await simulateUnstableServer({ slow: true })
   //user.updadtedAt = user.updadtedAt ?? new Date().toISOString()
   const db = await lowDb()
-  await db.update(({users}) => {
+  await db.update(({ users }) => {
     updateById(users ?? [], user)
   })
 }
@@ -335,7 +335,7 @@ export async function addSession(session: Session) {
   console.log('addSession', session)
   //await simulateUnstableServer({slow: true})
   const db = await lowDb()
-  await db.update(({sessions}) => {
+  await db.update(({ sessions }) => {
     sessions?.push({
       sessionId: session.sessionId,
       userId: session.userId,
@@ -349,7 +349,7 @@ export async function updateSession(session: Session) {
   //await simulateUnstableServer({slow: true})
   //user.updadtedAt = user.updadtedAt ?? new Date().toISOString()
   const db = await lowDb()
-  await db.update(({sessions}) => {
+  await db.update(({ sessions }) => {
     const index =
       sessions?.findIndex((item) => item.sessionId === session.sessionId) ?? -1
     if (index === -1) {
