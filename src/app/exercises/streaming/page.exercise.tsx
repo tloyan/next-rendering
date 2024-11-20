@@ -1,8 +1,7 @@
-// 🐶 Importe `Suspense` de `React`
+import {Suspense} from 'react'
 
-// 🐶 Importe les `Skeletons`
-// import {SkeletonCardList} from '@/components/skeleton-card-list'
-// import {SkeletonPostList} from '@/components/skeleton-post-list'
+import {SkeletonCardList} from '@/components/skeleton-card-list'
+import {SkeletonPostList} from '@/components/skeleton-post-list'
 import {ProductList} from './product-list'
 import {PostList} from './post-list'
 
@@ -13,6 +12,7 @@ import {unstable_noStore as noStore} from 'next/cache'
 const Page = async () => {
   noStore()
   const username = 'Mike Codeur'
+  await new Promise((resolve) => setTimeout(resolve, 1000))
   return (
     <>
       <div className="mx-auto max-w-4xl p-6 text-lg">
@@ -27,16 +27,14 @@ const Page = async () => {
       </div>
       <div className="mx-auto max-w-4xl p-6 text-lg">
         <h2 className="mb-4 text-center text-3xl font-bold">Products</h2>
-        {/* 🐶 Utilise <Suspense> pour affichier <ProductList />   */}
-        {/* Affiche `SkeletonCardList` pendant le chargement  */}
-        {/* 📑Suspense https://react.dev/reference/react/Suspense */}
-        <ProductList />
+        <Suspense fallback={<SkeletonCardList />}>
+          <ProductList />
+        </Suspense>
         <Separator className="my-4" />
         <h2 className="mb-4 text-center text-3xl font-bold">Posts</h2>
-        {/* 🐶 Utilise <Suspense> pour affichier <PostList />   */}
-        {/* Affiche `SkeletonPostList` pendant le chargement  */}
-        {/* 📑Suspense https://react.dev/reference/react/Suspense */}
-        <PostList />
+        <Suspense fallback={<SkeletonPostList />}>
+          <PostList />
+        </Suspense>
         <RenderTime name="streaming page" />
       </div>
     </>
