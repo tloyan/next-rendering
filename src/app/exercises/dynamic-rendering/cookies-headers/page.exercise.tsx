@@ -1,20 +1,27 @@
 import RenderTime from '@/components/render-time'
 import {getPosts} from '@/db/sgbd'
 import {Post} from '@/lib/type'
+import {cookies, headers} from 'next/headers'
 // 🐶 Importe cookies de 'next/headers'
 
 // 🤖 import {cookies} from 'next/headers'
 
 const Page = async () => {
-  const posts = await getPosts()
+  const data = await fetch('https://jsonplaceholder.typicode.com/posts', {
+    next: {revalidate: 10},
+  })
+  const posts = await data.json()
 
-  // https://nextjs.org/docs/app/api-reference/functions/cookies
-  // 🐶 Recupère les cookies
-  // const cookieStore =  ...
-
-  // 🐶 Récupere la valeur de 'userid' dans 'cookieStore'
-
-  // 🐶 Si 'userid' n'est pas renseigné (pas de user), vider posts
+  // const headersList = await headers()
+  // console.log(headersList.get('user-agent')?.includes('Chrome/131.0.0.0'))
+  // const cookieStore = await cookies()
+  // console.log(cookieStore.get('userid'))
+  // if (
+  //   !cookieStore.get('userid') ||
+  //   !headersList.get('user-agent')?.includes('Chrome/131.0.0.0')
+  // ) {
+  //   return <p>not authorize</p>
+  // }
 
   return (
     <div className="mx-auto max-w-4xl p-6 text-lg">
