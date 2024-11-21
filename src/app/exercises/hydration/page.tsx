@@ -1,7 +1,7 @@
 import {Separator} from '@/components/ui/separator'
 import ClientComponent from './client-component'
 import ServerComponent from './server-component'
-//import Phases from './phases'
+import Phases from './phases'
 
 export default function Page() {
   return (
@@ -12,8 +12,8 @@ export default function Page() {
 
       <ClientComponent></ClientComponent>
 
-      {/* <Separator className="mb-4" />
-      <Phases /> */}
+      <Separator className="mb-4" />
+      <Phases />
     </div>
   )
 }
